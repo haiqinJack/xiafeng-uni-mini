@@ -29,14 +29,18 @@
 			},
 			onGetAuthorize(e) {
 				console.log(e, 'onGetAuthorize')
-				my.getOpenUserInfo({
-				    fail: (res) => {
-						
-				    },
-				    success: (res) => {
-				      let userInfo = JSON.parse(res.response).response // 以下方的报文格式解析两层 response
-				    }
-				});
+				// #ifdef MP-ALIPAY
+				
+					my.getOpenUserInfo({
+						fail: (res) => {
+							console.log(res, 'fail res')
+						},
+						success: (res) => {
+							console.log(res, 'success res')
+							let userInfo = JSON.parse(res.response).response // 以下方的报文格式解析两层 response
+						}
+					});
+				// #endif
 			},
 			onAuthError(err) {
 				console.log(err, 'err')
