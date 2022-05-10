@@ -1,10 +1,57 @@
 {
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "uni-app"
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/appointment/appointment",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/goods/goods",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
 		}
-	}],
+    ],
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/tarbar/home.png",
+			"selectedIconPath": "static/tarbar/home-fill.png",
+			"text": "首页"
+		},{
+			"pagePath": "pages/appointment/appointment",
+			"iconPath": "static/tarbar/task-management.png",
+			"selectedIconPath": "static/tarbar/task-management-fill.png",
+			"text": "预约"
+		},{
+			"pagePath": "pages/goods/goods",
+			"iconPath": "static/tarbar/add-cart.png",
+			"selectedIconPath": "static/tarbar/add-cart-fill.png",
+			"text": "买粮"
+		},{
+			"pagePath": "pages/user/user",
+			"iconPath": "static/tarbar/account.png",
+			"selectedIconPath": "static/tarbar/account-fill.png",
+			"text": "我的"
+		}]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
