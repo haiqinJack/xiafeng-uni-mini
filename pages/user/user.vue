@@ -1,9 +1,21 @@
 <template>
 	<view>
-		<button @click="login">LOGIN</button>
+		<!-- #ifdef MP-WEIXIN -->
+		<button open-type="getUserInfo" @getuserinfo="getuserinfo">LOGIN</button>
+		<!-- #endif -->
+		<!-- #ifdef MP-ALIPAY -->
+		<button 
+			open-type="getAuthorize" 
+			scope="userInfo"
+			onGetAuthorize="onGetAuthorize"
+			@onGetAuthorize="getuserinfo"
+			onError="onAuthError"
+		>
+			ALI-LOGIN
+		</button>
+		<!-- #endif -->
 	</view>
 </template>
-
 <script>
 	export default {
 		data() {
@@ -12,25 +24,25 @@
 			}
 		},
 		methods: {
-			login(){
-				uni.getProvider({
-					service: 'oauth',
-					success: function (res) {
-						console.log(res.provider)
-						uni.login({
-							provider: res.provider[0],
-							scopes:'auth_user',
-							success({code}) {
-								uni.getUserInfo({
-									provider: res.provider[0],
-									success(user){
-										console.log(user,'user')
-									},
-								})
-							}
-						})
-					}
+			getuserinfo(e){
+				console.log(e, 'e')
+			},
+			onGetAuthorize(e) {
+				console.log(e, 'onGetAuthorize')
+				my.getOpenUserInfo({
+				    fail: (res) => {
+						
+				    },
+				    success: (res) => {
+				      let userInfo = JSON.parse(res.response).response // 以下方的报文格式解析两层 response
+				    }
 				});
+			},
+			onAuthError(err) {
+				console.log(err, 'err')
+			},
+			onClick(e) {
+				console.log(e, 'onclick')
 			}
 		}
 	}

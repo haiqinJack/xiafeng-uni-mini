@@ -1,16 +1,16 @@
 {
-  "id": "uni-id",
-  "displayName": "uni-id",
-  "version": "3.3.17",
-  "description": "简单、统一、可扩展的用户中心",
+  "id": "uni-captcha",
+  "displayName": "uni-captcha",
+  "version": "0.2.2",
+  "description": "简洁、高效、灵活可配置的云端验证码模块",
   "keywords": [
-    "uniid",
-    "uni-id",
-    "用户管理",
-    "用户中心",
-    "短信验证码"
+    "uniCloud",
+    "captcha",
+    "验证码",
+    "图形验证码",
+    "人机验证"
 ],
-  "repository": "https://gitee.com/dcloud/uni-id.git",
+  "repository": "https://gitee.com/dcloud/uni-captcha",
   "engines": {
     "HBuilderX": "^3.1.0"
   },
@@ -38,7 +38,7 @@
     "npmurl": ""
   },
   "uni_modules": {
-    "dependencies": ["uni-config-center"],
+    "dependencies": [],
     "encrypt": [],
     "platforms": {
       "cloud": {
