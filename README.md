@@ -9,3 +9,6 @@ git push -u origin main
 git remote add origin https://github.com/haiqinJack/xiafeng-uni-mini.git
 git branch -M main
 git push -u origin main
+
+git remote -v 
+git remote remove origin 
