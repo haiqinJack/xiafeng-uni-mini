@@ -50,7 +50,7 @@ exports.main = async (event, context) => {
 	*/
 	let noCheckAction = ['register', 'checkToken', 'login', 'logout', 'sendSmsCode', 'getNeedCaptcha',
 		'createCaptcha', 'verifyCaptcha', 'refreshCaptcha', 'inviteLogin', 'loginByWeixin',
-		'loginByUniverify', 'loginByApple', 'loginBySms', 'resetPwdBySmsCode', 'registerAdmin'
+		'loginByUniverify', 'loginByApple', 'loginBySms', 'resetPwdBySmsCode', 'registerAdmin', 'loginByAlipay'
 	]
 	if (!noCheckAction.includes(action)) {
 		if (!uniIdToken) {

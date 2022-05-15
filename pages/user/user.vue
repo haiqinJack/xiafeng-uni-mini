@@ -1,55 +1,53 @@
 <template>
 	<view>
-		<!-- #ifdef MP-WEIXIN -->
-		<button open-type="getUserInfo" @getuserinfo="getuserinfo">LOGIN</button>
-		<!-- #endif -->
-		<!-- #ifdef MP-ALIPAY -->
-		<button 
-			open-type="getAuthorize" 
-			scope="userInfo"
-			onGetAuthorize="onGetAuthorize"
-			@onGetAuthorize="getuserinfo"
-			onError="onAuthError"
-		>
-			ALI-LOGIN
-		</button>
-		<!-- #endif -->
+		<view>{{ userinfo }}</view>
+		<view>{{ token }}</view>
+		<view>{{ tokenExpired }}</view>
+		<button @click="login">LOGIN</button>
+		<button @click="updateuserinfo"></button>
 	</view>
 </template>
 <script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			getuserinfo(e){
-				console.log(e, 'e')
-			},
-			onGetAuthorize(e) {
-				console.log(e, 'onGetAuthorize')
-				// #ifdef MP-ALIPAY
-				
-					my.getOpenUserInfo({
-						fail: (res) => {
-							console.log(res, 'fail res')
-						},
-						success: (res) => {
-							console.log(res, 'success res')
-							let userInfo = JSON.parse(res.response).response // 以下方的报文格式解析两层 response
-						}
-					});
-				// #endif
-			},
-			onAuthError(err) {
-				console.log(err, 'err')
-			},
-			onClick(e) {
-				console.log(e, 'onclick')
+import { useUserStore } from '@/stores/user';
+import { mapState, mapActions} from 'pinia'
+import loginApi from '@/api/login.js'
+
+export default {
+	computed:{
+		...mapState(useUserStore, ['userinfo', 'token', 'tokenExpired'])
+	},
+	setup(){
+		const userStore = useUserStore()
+		const updateuserinfo = function(e) {
+			console.log(e)
+			userStore.setUserInfo({nickname: 'userStore'})
+		}
+		return {
+			updateuserinfo
+		}
+	},
+	data() {
+		return {
+			
+		}
+	},
+	methods: {
+		...mapActions(useUserStore, ['SET_TOKEN']),
+		async login(e){
+			const { result } = await loginApi.login()
+			console.log(result, 'userinfo--login')
+			uni.showModal({
+				showCancel: false,
+				content: JSON.stringify(result)
+			})
+			if (res.result.code === 0) {
+				this.SET_TOKEN()
+				uni.setStorageSync('uni_id_token', res.result.token)
+				uni.setStorageSync('uni_id_token_expired', res.result.tokenExpired)
 			}
 		}
 	}
+}
 </script>
 
 <style>

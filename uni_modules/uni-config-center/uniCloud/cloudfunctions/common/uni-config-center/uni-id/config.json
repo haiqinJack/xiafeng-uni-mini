@@ -1,0 +1,64 @@
+{
+	"passwordSecret": "xiafeng-uni-mini.qinhaiJack",
+	"tokenSecret": "xiafeng-uni-mini.qinhaiJack",
+	"tokenExpiresIn": 7200,
+	"tokenExpiresThreshold": 600,
+	"passwordErrorLimit": 6,
+	"passwordErrorRetryTime": 3600,
+	"autoSetInviteCode": false,
+	"forceInviteCode": false,
+	"app-plus": {
+		"tokenExpiresIn": 2592000,
+		"oauth" : {
+			"weixin" : {
+				"appid" : "wx3c6187fcebb1fd68",
+				"appsecret" : "zxcvbnmasdfghjklqwertyuiop123456"
+			},
+			"apple":	{
+				"bundleId": "your APP bundleId"
+			},
+      "qq": {
+        "appid": "qq appid",
+        "appsecret": "qq app key"
+      }
+		}
+	},
+	"mp-weixin": {
+		"oauth" : {
+			"weixin" : {
+				"appid" : "wx3c6187fcebb1fd68",
+				"appsecret" : "zxcvbnmasdfghjklqwertyuiop234567"
+			}
+		}
+	},
+	"mp-alipay": {
+		"oauth" : {
+			"alipay" : {
+				"appid" : "2021003128637447",
+				"privateKey" : "MIIEogIBAAKCAQEAiOi8SzX9DxWowEIxzCrIxToXF5/sWXh60lK6BUe36wuf7/YFVb/DsmPbEstG4TB3DZfLQRdtRPh/8qRb6wCdVRjOWeWC54uyXett7Exuv2tf698VuZMqovYH8CkStGM0ZcjybIp/z2JqcTJE5GbkZo051mdZndZg6/a51Uqxa/0ga7TpuRoNSiDsaj/5Nsr9EKxlnKFMkQXlkE6totDuUa2D0MAPXEm60zSJC5tBavd9nbR5KgLmJRecxhInmuOZ+wAc2aOq++AmGuGougDAMf6WKW4sRn2T4O24Hf0RJRkJXL6WKvT3/XYScjfjtYTov8JGcFDlWb5vMK2nSR04FwIDAQABAoIBAGUgzJ0dlvxCenDxNElkPQL6Ir6PoYyBIvAirUdjL2ZOIuikKFKroIkvm02pm4SRQQ9oVXmSLWNpz1DSuRbAUHbgKORcVLJmDO21DnAiERgR3zuigDCglTjkVP6/yBI4ySZ6JR+pujjcsFVG1X6Exic+ID/P/XFKPjNt/tyfHKjvqSgwQkZtQZu+dJkkDhCWGcdnkha2Fmfxm8Q+HQY1eE2A7W7LEcrI4FoCv0NJvowDvAZNvb1sMlA5OvotKemVIb+XSjBNv+uuk1k4j7mcOyHZ/TG6P8hPVD2EqnsCFsXMIKRmA5wUUOjc9l+zgbuHFzwPIDh89ZKUoKzIhPE3hVkCgYEA5m44e/IbyJhvqj1A1fofaS1nZFfpxwZVlm5NT8Utf1WmnoizhvDaMudwXV1F13u5/6sRdo8ZKdVohB0G/2MAhZsiwBPYxXzNOqvzzZHE2oPaNadOpTs84FxsGfdrU5/9jnnK3jZ9sbMOHLi81IWHTJGclLC8cboheO4zFVFSWlMCgYEAmBngaA1BdgCA0kcuQqa3D9ebaE27giWCE0U3HYF7e7PyUb13lI6ZYbFQgmXc9Vm9PvFwA9+aTUVr/gwunVAFwMdnUZhqCmKVVsEtmI5FfHbeUVUbZmQl5F8Y+o3rmDIn8TFnxmQ1H6X2b2zi0B0yc6ZwC8RzDk7SuJ9omMfXWq0CgYA2R9SKbffZgv8a7R7uyOLJVea7HnJ1baqPqyAPIHWdP0HmqnEP4oCj6RzxAV3Iat7fuR59/SuCTUE3jdbuJhYjYu4GrSYtLz7xCTx/Ok1S5Chs5yKBjbjDaUIVw9DGfDOwckQ1oERvrawvW90vetzqTorCA/gAGkZ0RDhIV0W8/QKBgDE5nrDOKXNhMk/bjZMwlWphIwCct6SlMvW9ntrDvw0H7dKaeQrxI57EXgP1p48YHfEy/keipDOB1jOACc4LyfDcGAoGQ7tcsGxFVNZcpQxlBApaeuWmX8ULKfBc4fR9twOOM8G3SKIXeiwRl043RM68/OIyD/J/fB8YKCfZ9U55AoGAcsLS2JNIFv28/QLRK96xf9/UirDexxUSxlJ7FzD+iX4vIV/UuROmioP1crD9iCnmzG67qJ2tLeWzarkKz9EBMm914tFHe71YCA7XEX8kwHIxlMlMe5gljBlAcwBldQwyG8DhKknzQsVDys9YeNCjdByxK65ta7gudLVw0FjrYeA=",
+				"keyType": "PKCS1"
+			}
+		}
+	},
+  "mp-qq": {
+    "oauth": {
+      "qq": {
+        "appid" : "mp qq appid",
+        "appsecret" : "mp qq appsecret"
+      }
+    }
+  },
+	"service": {
+		"sms": {
+			"name": "DCloud",
+			"codeExpiresIn": 300,
+			"smsKey": "your sms key",
+			"smsSecret": "your sms secret"
+		},
+		"univerify": {
+			"appid":"your appid",
+			"apiKey": "your apiKey",
+			"apiSecret": "your apiSecret"
+		}
+	}
+}
