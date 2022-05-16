@@ -1,6 +1,5 @@
 export default {
-	login(){
-		
+	login(){		
 		return this.getCode()
 		.then((code) => {
 			return uniCloud.callFunction({

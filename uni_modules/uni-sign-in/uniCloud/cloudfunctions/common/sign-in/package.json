@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "sign-in",
   "version": "1.0.0",
@@ -10,3 +11,17 @@
   "author": "",
   "license": "ISC"
 }
+=======
+{
+  "name": "sign-in",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+>>>>>>> 5a1d8015d72f404962140c8bd53e20abfa43af46
