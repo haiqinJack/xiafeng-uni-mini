@@ -1,13 +1,28 @@
 <template>
 	<view>
-		<!-- #ifdef MP-WEIXIN -->
+		<view class="bg-light" style="min-height: 99vh;">
+			<view class="d-flex align-items-center flex-column" style="margin-bottom: 30px; padding-top: 30px;">
+				<template>
+					<image class="login-image" mode="center" src="~@/static/logo.jpeg" />
+					<button class="login-button">登录</button>
+				</template>
+			</view>
+		</view>
 		<view @click="login">LOGIN</view>
-		<!-- #endif -->
+		<view>{{ userStroe.userInfo._id }}</view>
+		<view>{{ userStroe.userInfo.nickName }}</view>
+		<image :src="userStroe.userInfo.avatarUrl" />
 	</view>
 </template>
 <script>
-const db = uniCloud.database()
+import { useUserStore } from '@/stores/user';
 export default {
+	setup() {
+		const userStroe = useUserStore();
+		return {
+			userStroe
+		};
+	},
 	data() {
 		return {};
 	},
@@ -16,44 +31,44 @@ export default {
 			// #ifdef MP-WEIXIN
 			uni.getUserProfile({
 				desc: '为了更好的服务',
-				success(userinfo) {
-					console.log(userinfo, 'userinfo');
+				success: res => {
+					console.log(res.userInfo, 'userinfo');
+					this.userStroe.setUserInfo(res.userInfo);
 				},
 				fail(err) {
 					console.error(err, 'err');
 				}
 			});
 			//#endif
-		},
-		getUserInfo() {
-			my.getAuthCode({
-				scopes: 'auth_user',
-				fail: error => {
-					console.error('getAuthCode', error);
-				},
-				success: () => {
-					// do login...
-					// then
-					my.getAuthUserInfo({
-						fail: error => {
-							console.error('getAuthUserInfo', error);
-						},
-						success: userInfo => {
-							console.log(`userInfo:`, userInfo);
-							this.setData({
-								userInfo,
-								hasUserInfo: true
-							});
-							abridge.alert({
-								title: JSON.stringify(userInfo) // alert 框的标题
-							});
-						}
-					});
-				}
-			});
 		}
 	}
 };
 </script>
 
-<style></style>
+<style>
+.login-button {
+	-webkit-tap-highlight-color: transparent;
+	background-color: #f8f8f8;
+	border-radius: 5px;
+	box-sizing: border-box;
+	color: #000;
+	cursor: pointer;
+	display: block;
+	font-size: 18px;
+	line-height: 2.55555556;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	padding-left: 14px;
+	padding-right: 14px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+}
+.login-image {
+	width: 160rpx; 
+	height: 160rpx;
+	border-radius: 50%;
+	margin-bottom: 20rpx;
+}
+</style>
