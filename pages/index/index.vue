@@ -1,9 +1,52 @@
 <template>
-	<view class="container">
-		
-		<view class="intro">本项目已包含uni ui组件，无需import和注册，可直接使用。在代码区键入字母u，即可通过代码助手列出所有可用组件。光标置于组件名称处按F1，即可查看组件文档。</view>
-		<text class="intro">详见：</text>
-		<uni-link :href="href" :text="href"></uni-link>
+	<view>
+		<uni-swiper-dot :info="info" :current="current" field="content" :mode="mode">
+			<swiper class="swiper-box" @change="change">
+				<swiper-item>
+					<image class="swiper-image" src="/static/logo.jpeg" mode="scaleToFill"></image>
+				</swiper-item>
+			</swiper>
+		</uni-swiper-dot>
+		<view style="height: 180px;position: relative; width: 700rpx;margin: 0 auto; margin-top: -40rpx; " class="d-flex align-middle bg-light my-radius-left my-radius-right" >
+		    <view style="width: 50%;padding-top: 20rpx;" 
+				class="bg-white shadow d-flex flex-column align-items-center my-radius-left"
+				@click="to('/pages/shop/shop')"
+		    >
+		        <view>
+		            <image
+		                style="width: 140rpx; height: 140rpx;"
+		                src="/static/xizao.png"
+		            >
+		            </image>
+		        </view>
+		        <view style="font-size: x-large; line-height: 3rem; ">
+		            洗护预约
+		        </view>
+		        <view style="font-size: x-small;" class="text-muted">
+		            爱洗澡 爱健康
+		        </view>
+		        
+		    </view>
+		    <view style="width: 50%; padding-top: 20rpx;"
+				class="bg-white shadow d-flex flex-column align-items-center my-radius-right"      
+				@click="to('/pages/goods/goods')"
+			>
+		        <view>
+		            <image
+		                style="width: 140rpx; height: 140rpx;"
+		                src="/static/food.png"
+		            >
+		            </image>
+		        </view>
+		        <view style="font-size: x-large; line-height: 3rem; ">
+		            宠物粮食
+		        </view>
+		        <view style="font-size: x-small;" class="text-muted">
+		            简单便捷不社恐
+		        </view>
+		        
+		    </view>
+		</view>
 	</view>
 </template>
 
@@ -11,19 +54,38 @@
 	export default {
 		data() {
 			return {
-				href: 'https://uniapp.dcloud.io/component/README?id=uniui'
+				current: 0,
+				mode: 'dot',
 			}
 		},
 		methods: {
-
+			to(url){
+				uni.switchTab({
+					url
+				})
+			},
+			change(e) {
+				this.current = e.detail.current;
+			}
 		}
 	}
 </script>
 
 <style>
-	.container {
-		padding: 20px;
-		font-size: 14px;
-		line-height: 24px;
-	}
+.swiper-box {
+	width: 750rpx;
+	height: 600rpx;
+}
+.swiper-image {
+	width: 750rpx;
+	height: 600rpx;
+}
+.my-radius-left {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+.my-radius-right {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
 </style>

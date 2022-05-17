@@ -3,52 +3,135 @@
 	<view>
 		<view class="bg-light" style="min-height: 99vh;">
 			<view class="d-flex align-items-center flex-column" style="margin-bottom: 30px; padding-top: 30px;">
-				<template>
-					<image class="login-image" mode="center" src="~@/static/logo.jpeg" />
-					<button class="login-button">登录</button>
+				<template v-if="!userInfo.nickName">
+					<image class="login-image" mode="scaleToFill" src="~@/static/logo.jpeg" />
+					<!-- #ifdef MP-WEIXIN -->
+					<button class="login-button" @click="getUserProfile">登录</button>
+					<!-- #endif -->
 				</template>
+				<template v-else>
+					<image class="login-image" mode="scaleToFill" :src="userInfo.avatarUrl" />
+					<view class="nickName">{{userInfo.nickName}}</view>
+				</template>
+				<view>{{ userInfo._id}}</view>
 			</view>
-		</view>
-		<view @click="login">LOGIN</view>
-		<view>{{ userStroe.userInfo._id }}</view>
-		<view>{{ userStroe.userInfo.nickName }}</view>
-		<image :src="userStroe.userInfo.avatarUrl" />
+			<view class="bg-white">
+				<view class="cell-group">
+					<view class="cell">
+						<uni-icons custom-prefix="iconfont" type="diy-chongwu" class="cell-left-icon"></uni-icons>
+						<text class="cell-title">我的宠物</text>
+						<uni-icons type="right" class="cell-right-icon"></uni-icons>
+					</view>
+					<view class="cell">
+						<uni-icons custom-prefix="iconfont" type="diy-ontimeshipment" class="cell-left-icon"></uni-icons>
+						<text class="cell-title">我的预约</text>
+						<uni-icons type="right" class="cell-right-icon"></uni-icons>
+					</view>
+					<view class="cell">
+						<uni-icons custom-prefix="iconfont" type="diy-searchcart" class="cell-left-icon"></uni-icons>
+						<text class="cell-title">我的订单</text>
+						<uni-icons type="right" class="cell-right-icon"></uni-icons>
+					</view>
+				</view>
+			</view>	
+		</view>		
 	</view>
 </template>
 <script>
 import { useUserStore } from '@/stores/user';
-
-import { mapState, mapActions} from 'pinia'
-import loginApi from '@/api/login.js'
+import { mapState } from 'pinia'
 
 export default {
 	computed:{
 		...mapState(useUserStore, ['userInfo', 'token', 'tokenExpired'])
-	},
-	setup(){
-		const userStore = useUserStore()
-		
-		return {
-			userStore
-		}
 	},
 	data() {
 		return {
 			
 		}
 	},
-	methods: {
-		async login(e){
-			const { result } = await loginApi.login()
-			console.log(result, 'userinfo--login')
-			uni.showModal({
-				showCancel: false,
-				content: JSON.stringify(result)
+	setup(){
+		const userStore = useUserStore()
+		const getPhoneNumber = function(e) {
+			console.log('hha', e)
+			// #ifdef MP-ALIPAY
+			my.getPhoneNumber({
+			    success: (res) => {
+			        let encryptedData = JSON.parse(res.response);
+					console.log(encryptedData)
+					console.log(typeof encryptedData)
+					uniCloud.callFunction({
+						name: 'alipay-AES',
+						data: {
+							content : encryptedData.response,
+							sign : encryptedData.sign
+						}
+					})
+			    },
+			    fail: (res) => {
+			        console.log(res);
+			        console.log('getPhoneNumber_fail', res);
+			    },
+			});
+			// #endif
+		}
+		const onGetAuthorize = function(e) {
+			console.log(e,'eee')
+		}
+		const onAuthError = function(e) {
+			console.error(e, 'errr')
+		}
+		const getPhoneNumberByWeixin = function(e) {
+			console.log(e, 'e---')
+			console.log('bindMobileByMpWeixin>>>', e)
+			uni.showLoading({
+				title: 'loading'
+			});
+			uniCloud.callFunction({
+				name: "uni-id-cf",
+				data: {
+					"action": "bindMobileByMpWeixin",
+					"params": e.detail
+				},
+				
+				success: ({
+					result
+				}) => {
+					
+					uni.showToast({
+						title: result.msg || '绑定成功',
+						icon: 'none'
+					});
+					if (result.code === 0) {
+						this.mobile = result.mobile
+					}
+				},
+				fail(err) {
+					console.log(err, 'err----')	
+				},
+				complete: () => {
+					uni.hideLoading()
+				},
 			})
-			if (res.result.code === 0) {
-				uni.setStorageSync('uni_id_token', res.result.token)
-				uni.setStorageSync('uni_id_token_expired', res.result.tokenExpired)
-			}
+		}
+		const getUserProfile = function(e) {
+			uni.getUserProfile({
+				desc: '完善用户资料',
+				success: (result) => {
+					userStore.setUserInfo(result.userInfo)
+				},
+				fail: (err) => {
+					console.error(err, 'err----')
+				}
+			})
+		}
+		
+		return {
+			getPhoneNumber,
+			onGetAuthorize,
+			onAuthError,
+			getPhoneNumberByWeixin,
+			getUserProfile
 		}
 	}
 }
@@ -80,5 +163,47 @@ export default {
 	height: 160rpx;
 	border-radius: 50%;
 	margin-bottom: 20rpx;
+}
+.nickName {
+	font-size: 18px;
+	line-height: 2.55555556;
+}
+.cell-group {
+	border-top: 1px solid #f2f3f5;
+}
+.cell {
+	border-bottom: 1px solid #f2f3f5;
+	height: 4rem;
+	align-items: center;
+	box-sizing: border-box;
+	display: flex;
+	font-size: 14px;
+	line-height: 24px;
+	padding: 10px 16px;
+	position: relative;
+	width: 100%;
+}
+.cell:hover {
+	background-color: #f2f3f5
+}
+.cell-left-icon {
+	margin-right: 4px;
+	align-items: center;
+	display: flex;
+	font-size: 16px;
+	height: 24px;
+	justify-content: center;
+}
+.cell-title {
+	flex: 1;
+	display: block;
+}
+.cell-right-icon {
+	margin-left: 4px;
+	align-items: center;
+	display: flex;
+	font-size: 16px;
+	height: 24px;
+	justify-content: center;
 }
 </style>

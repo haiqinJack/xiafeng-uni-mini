@@ -65,7 +65,10 @@ export const useUserStore = defineStore('user', {
 					scopes: 'auth_base',
 					success(res){
 						resolve(res)
-					}							
+					},
+					fail(err) {
+						reject(err)
+					}						
 				})		
 				// #endif
 				
@@ -75,14 +78,19 @@ export const useUserStore = defineStore('user', {
 					onlyAuthorize: true,
 					success(res){
 						resolve(res)
-					}							
+					},
+					fail(err) {
+						reject(err)
+					}
 				})		
 				// #endif
 			})
 		},
 		setUserInfo(userInfo) {
+			console.log('setUserInfo')
 			let oldUserInfo = this.userInfo
 			let newUserInfo = Object.assign(oldUserInfo, userInfo)
+			console.log(newUserInfo, 'newUserInfo-------')
 			this.userInfo = newUserInfo
 		}
 	}

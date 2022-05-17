@@ -3,25 +3,25 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/appointment/appointment",
+			"path": "pages/shop/shop",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "门店列表"
 			}
 		},
 		{
 			"path": "pages/goods/goods",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "买粮"
 			}
 		},
 		{
 			"path": "pages/user/user",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "我的"
 			}
 		}
     ],
@@ -36,7 +36,7 @@
 			"selectedIconPath": "static/tarbar/home-fill.png",
 			"text": "首页"
 		},{
-			"pagePath": "pages/appointment/appointment",
+			"pagePath": "pages/shop/shop",
 			"iconPath": "static/tarbar/task-management.png",
 			"selectedIconPath": "static/tarbar/task-management-fill.png",
 			"text": "预约"

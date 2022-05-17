@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3408117 */
+  src: url('/static/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.diy-ontimeshipment:before {
+  content: "\e75a";
+}
+
+.diy-searchcart:before {
+  content: "\e763";
+}
+
+.diy-chongwu:before {
+  content: "\e6d7";
+}
+

@@ -62,7 +62,10 @@
             "scope.userLocation" : {
                 "desc" : "根据用户当前位置推荐附近门店"
             }
-        }
+        },
+		"optimization": {
+			"subPackages":true
+		}
     },
     "vueVersion" : "3",
     "mp-alipay" : {
