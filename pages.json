@@ -28,11 +28,17 @@
 	"subPackages": [{
 		"root": "subPages",
 		"pages": [{
+			"path": "appointment/categoryAppointment",
+			"style": {
+				"navigationBarTitleText": "预约"
+			}
+		},{
 			"path": "appointment/appointment",
 			"style": {
 				"navigationBarTitleText": "预约"
 			}
-		}]
+		} 
+        ]
 	}],
 	"tabBar": {
 		"color": "#7A7E83",

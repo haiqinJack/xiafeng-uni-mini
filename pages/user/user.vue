@@ -142,18 +142,18 @@ export default {
 .login-button {
 	-webkit-tap-highlight-color: transparent;
 	background-color: #f8f8f8;
-	border-radius: 5px;
+	border-radius: 10rpx;
 	box-sizing: border-box;
 	color: #000;
 	cursor: pointer;
 	display: block;
-	font-size: 18px;
+	font-size: 36rpx;
 	line-height: 2.55555556;
 	margin-left: auto;
 	margin-right: auto;
 	overflow: hidden;
-	padding-left: 14px;
-	padding-right: 14px;
+	padding-left: 28rpx;
+	padding-right: 28rpx;
 	position: relative;
 	text-align: center;
 	text-decoration: none;
@@ -165,21 +165,21 @@ export default {
 	margin-bottom: 20rpx;
 }
 .nickName {
-	font-size: 18px;
+	font-size: 36rpx;
 	line-height: 2.55555556;
 }
 .cell-group {
-	border-top: 1px solid #f2f3f5;
+	border-top: 2rpx solid #f2f3f5;
 }
 .cell {
 	border-bottom: 1px solid #f2f3f5;
-	height: 4rem;
+	height: 128rpx;
 	align-items: center;
 	box-sizing: border-box;
 	display: flex;
-	font-size: 14px;
-	line-height: 24px;
-	padding: 10px 16px;
+	font-size: 28rpx;
+	line-height: 2;
+	padding: 20rpx 32rpx;
 	position: relative;
 	width: 100%;
 }
@@ -187,23 +187,22 @@ export default {
 	background-color: #f2f3f5
 }
 .cell-left-icon {
-	margin-right: 4px;
 	align-items: center;
 	display: flex;
-	font-size: 16px;
-	height: 24px;
+	height: 48rpx;
 	justify-content: center;
 }
 .cell-title {
 	flex: 1;
 	display: block;
+	padding-left: 10rpx;
 }
 .cell-right-icon {
-	margin-left: 4px;
+	margin-left: 8rpx;
 	align-items: center;
 	display: flex;
-	font-size: 16px;
-	height: 24px;
+	font-size: 32rpx;
+	height: 48rpx;
 	justify-content: center;
 }
 </style>

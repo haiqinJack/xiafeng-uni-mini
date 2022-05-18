@@ -19,7 +19,7 @@
 		            >
 		            </image>
 		        </view>
-		        <view style="font-size: x-large; line-height: 3rem; ">
+		        <view class="title">
 		            洗护预约
 		        </view>
 		        <view style="font-size: x-small;" class="text-muted">
@@ -38,7 +38,7 @@
 		            >
 		            </image>
 		        </view>
-		        <view style="font-size: x-large; line-height: 3rem; ">
+		        <view class="title">
 		            宠物粮食
 		        </view>
 		        <view style="font-size: x-small;" class="text-muted">
@@ -81,11 +81,17 @@
 	height: 600rpx;
 }
 .my-radius-left {
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
+    border-top-left-radius: 30rpx;
+    border-bottom-left-radius: 30rpx;
 }
 .my-radius-right {
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-top-right-radius: 30rpx;
+    border-bottom-right-radius: 30rpx;
+}
+
+.title {
+	font-size: 48rpx;
+	line-height: 60rpx;
+	margin: 20rpx 0;
 }
 </style>

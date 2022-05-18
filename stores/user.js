@@ -4,8 +4,8 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
 	state: () => ({ 
 		userInfo: {},
-		token: uni.getStorageSync('uni_id_token'),
-		tokenExpired: uni.getStorageSync('uni_id_token_expired'),
+		token: uni.getStorageSync('uni_id_token') || '',
+		tokenExpired: uni.getStorageSync('uni_id_token_expired') || 0,
 		
 	}),
 	actions: {
