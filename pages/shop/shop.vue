@@ -11,7 +11,7 @@
 					open-type="openSetting"
 					@opensetting="openSetting"
 				>
-					去开启位置信息weixin
+					去开启位置信息wx
 				</button>
 				<!-- #endif -->
 				<!-- #ifdef MP-ALIPAY -->
@@ -26,12 +26,17 @@
 			</view>
 		</template>
 		<template v-else>
-			<map :showMap="showMap" style="width: 100%; height: 500rpx;" show-location :latitude="latitude" :longitude="longitude" :markers="covers"></map>
-			<view>
-				<template v-for="(item, index) in covers" :key="index">
-					<diy-card :title="item.title" :desc="item.desc" @choose="chooseShop(item)"><view slot="footer">距离您 1 km</view></diy-card>
-				</template>
-			</view>
+			<unicloud-db v-slot:default="{data, loading, error, options}" collection="shops">
+				<view v-if="error">{{error.message}}</view>
+				<view v-else>
+					<map :showMap="showMap" style="width: 100%; height: 500rpx;" show-location :latitude="latitude" :longitude="longitude" :markers="data"></map>
+					<view>
+						<template v-for="(item, index) in data" :key="index">
+							<diy-card :title="item.title" :desc="item.desc" @choose="chooseShop(item)"><view slot="footer">距离您 1 km</view></diy-card>
+						</template>
+					</view>					
+				</view>
+			</unicloud-db>
 		</template>
 	</view>
 </template>
@@ -51,28 +56,7 @@ export default {
 	data() {
 		return {
 			showMap: true,
-			covers: [
-			{
-				id: 1,
-				latitude: 22.8403,
-				longitude: 108.281,
-				title: '夏天的风宠物生活馆(盛天尚都店)',
-				desc: '南宁市西乡塘区心圩江东路8号盛天尚都1号楼2号商铺',
-				iconPath: '/static/logo.jpeg',
-				width: '100rpx',
-				height: '100rpx'
-			},
-			{
-				id: 1,
-				latitude: 22.8403,
-				longitude: 108.281,
-				title: '夏天的风宠物生活馆(翰林店)',
-				desc: '南宁市西乡塘区心圩江东路8号盛天尚都1号楼2号商铺',
-				iconPath: '/static/logo.jpeg',
-				width: '100rpx',
-				height: '100rpx'
-			}
-			],
+			covers: [],
 			latitude: 22.8415,
 			longitude: 108.27747,
 			hasLocation: true,	
@@ -87,10 +71,21 @@ export default {
 						this.hasLocation = false;
 						this.getLocation();
 					} else {
+						this.onAuthLocation()
 						this.hasLocation = true;
 					}
 				}
 			});
+		},
+		onAuthLocation(){
+			uni.authorize({
+				scope: 'scope.userLocation',
+				success:(e) => {
+					console.log(e, 'authsuccess')
+					this.hasLocation = false;
+					this.getLocation();
+				}
+			})
 		},
 		openSetting(e) {
 			uni.openSetting({
