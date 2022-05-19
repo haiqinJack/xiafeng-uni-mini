@@ -1,7 +1,6 @@
 <template>
-	<view class="cell">
+	<view class="cell bg-white">
 		<slot name="left">
-			<uni-icons custom-prefix="iconfont" type="diy-chongwu" class="cell-left-icon"></uni-icons>
 		</slot>	
 		<text class="cell-title">{{ title }}</text>
 		<uni-icons type="right" class="cell-right-icon"></uni-icons>

@@ -27,12 +27,14 @@
 		</template>
 		<template v-else>
 			<unicloud-db v-slot:default="{data, loading, error, options}" collection="shops">
+				<map :showMap="showMap" style="width: 100%; height: 500rpx;" show-location :latitude="latitude" :longitude="longitude" :markers="data"></map>
 				<view v-if="error">{{error.message}}</view>
+				<view v-else-if="loading">正在加载...</view>
 				<view v-else>
-					<map :showMap="showMap" style="width: 100%; height: 500rpx;" show-location :latitude="latitude" :longitude="longitude" :markers="data"></map>
 					<view>
-						<template v-for="(item, index) in data" :key="index">
-							<diy-card :title="item.title" :desc="item.desc" @choose="chooseShop(item)"><view slot="footer">距离您 1 km</view></diy-card>
+						<template v-for="(item, index) in data" :key="index"><!-- 
+							<view @click="makePhone(item.phone)">{{ item.phone }}</view> -->
+							<diy-card :title="item.title" :desc="item.desc" :status="item.status" @choose="chooseShop(item)"><view slot="footer">距离1km</view></diy-card>
 						</template>
 					</view>					
 				</view>
@@ -116,6 +118,18 @@ export default {
 			this.setShop(shop);
 			uni.navigateTo({
 				url: '/subPages/appointment/categoryAppointment'
+			})
+		},
+		makePhone(phoneNumber){
+			console.log(phoneNumber, 'phoneNumber')
+			uni.makePhoneCall({
+				phoneNumber: `${phoneNumber}`,
+				success(res){
+					console.log(res,'res')
+				},
+				fail(err) {
+					console.error(err)
+				}
 			})
 		}
 	}

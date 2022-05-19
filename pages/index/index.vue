@@ -1,12 +1,17 @@
 <template>
 	<view>
-		<uni-swiper-dot :info="info" :current="current" field="content" :mode="mode">
-			<swiper class="swiper-box" @change="change">
-				<swiper-item>
-					<image class="swiper-image" src="/static/logo.jpeg" mode="scaleToFill"></image>
-				</swiper-item>
-			</swiper>
-		</uni-swiper-dot>
+		<unicloud-db v-slot:default="{data, loading, error, options}" collection="opendb-banner">
+			<view v-if="error">{{error.message}}</view>
+			<view v-else>
+				<uni-swiper-dot :info="info" :current="current" field="content" :mode="mode">
+					<swiper class="swiper-box" @change="change">
+						<swiper-item v-for="(item, index) in data" :key="index">
+							<image class="swiper-image" :src="item.bannerfile.url" mode="scaleToFill"></image>
+						</swiper-item>						
+					</swiper>
+				</uni-swiper-dot>
+			</view>
+		</unicloud-db>
 		<view style="height: 180px;position: relative; width: 700rpx;margin: 0 auto; margin-top: -40rpx; " class="d-flex align-middle bg-light my-radius-left my-radius-right" >
 		    <view style="width: 50%;padding-top: 20rpx;" 
 				class="bg-white shadow d-flex flex-column align-items-center my-radius-left"
@@ -65,6 +70,7 @@
 				})
 			},
 			change(e) {
+				console.log(e.detail.current)
 				this.current = e.detail.current;
 			}
 		}
