@@ -7,7 +7,7 @@
 				<uni-icons type="right" class="cell-right-icon"></uni-icons>
 			</view>
 		</navigator>
-		<unicloud-db v-slot:default="{data, loading, error, options}" collection="category-appointment">
+		<unicloud-db v-slot:default="{data, loading, error, options}" collection="appointment-category">
 			<view v-if="error">{{error.message}}</view>
 			<view v-else-if="loading">加载中...</view>
 			<view v-else class="box bg-light">
