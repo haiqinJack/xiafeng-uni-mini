@@ -37,7 +37,12 @@
 			"style": {
 				"navigationBarTitleText": "预约"
 			}
-		} 
+		},{
+			"path" : "appointment/add",
+			"style" : {
+				"navigationBarTitleText": "预约"
+			}
+		}
         ]
 	}],
 	"tabBar": {

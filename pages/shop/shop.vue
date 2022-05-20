@@ -117,7 +117,7 @@ export default {
 			console.log('选中门店')
 			this.setShop(shop);
 			uni.navigateTo({
-				url: '/subPages/appointment/categoryAppointment'
+				url: `/subPages/appointment/categoryAppointment`
 			})
 		},
 		makePhone(phoneNumber){

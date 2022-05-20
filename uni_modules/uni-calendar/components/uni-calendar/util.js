@@ -122,6 +122,7 @@ class Calendar {
 		let dateArr = []
 		let fullDate = this.date.fullDate
 		for (let i = 1; i <= dateData; i++) {
+			let isinfo = false
 			let nowDate = full.year + '-' + (full.month < 10 ?
 				full.month : full.month) + '-' + (i < 10 ?
 				'0' + i : i)
@@ -310,8 +311,11 @@ class Calendar {
 	 */
 	_getWeek(dateData) {
 		const {
+			fullDate,
 			year,
-			month
+			month,
+			date,
+			day
 		} = this.getDate(dateData)
 		let firstDay = new Date(year, month - 1, 1).getDay()
 		let currentDay = new Date(year, month, 0).getDate()

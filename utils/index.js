@@ -73,9 +73,14 @@ const timestampToTime = function (timestamp) {
     return Y + M + D + h + m + s;
 };
 
+const keepTwoDecimal = function(num) {
+	let _num = Math.floor(num * 100) / 100
+}
+
 module.exports = {
     _removeArrayByIndex,
     _extFileType,
     _distance,
     timestampToTime,
+	keepTwoDecimal
 };
