@@ -7,13 +7,13 @@
 				<uni-icons type="right" class="cell-right-icon"></uni-icons>
 			</view>
 		</navigator>
-		<unicloud-db ref="udb" loadtime="manual" v-slot:default="{data, loading, error, options}" collection="appointment-category" :where="where">
+		<unicloud-db ref="udb" loadtime="manual" v-slot:default="{data, loading, error, options}" collection="appointment-project" :where="where">
 			<view v-if="error">{{error.message}}</view>
 			<view v-else-if="loading">加载中...</view>
 			<view v-else-if="data.length === 0" class="n">门店目前没有服务项目</view>
 			<view v-else class="box bg-light">
 				<uni-row :gutter="18">
-					<uni-col :span="11" v-for="(item,index) in list" :key="index">
+					<uni-col :span="11" v-for="(item,index) in data" :key="index">
 						<view class="card bg-white shadow-sm" >
 							<image 
 								class="card_image"
@@ -51,8 +51,8 @@
 	import { mapState } from 'pinia';
 	import { useShopStore } from '@/stores/shop';
 	export default {
-		onLoad() {
-			this.where = `shopId=='${this.shop._id}'`
+		onLoad(option) {
+			this.where = `category_id=='${option.category_id}'`
 			this.$nextTick(() => {
 				this.$refs.udb.loadData()
 			})
@@ -132,7 +132,7 @@
     flex-direction: column;
 }
 .card_image {
-	width: 320rpx;
+	width: 100%;
 	height: 320rpx;
 }
 .card_footer {

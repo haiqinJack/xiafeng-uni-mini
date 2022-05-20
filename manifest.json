@@ -63,12 +63,21 @@
                 "desc" : "根据用户当前位置推荐附近门店"
             }
         },
-		"optimization": {
-			"subPackages":true
-		}
+        "optimization" : {
+            "subPackages" : true
+        }
     },
     "vueVersion" : "3",
     "mp-alipay" : {
         "appid" : "2021003128637447"
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : ""
+                }
+            }
+        }
     }
 }

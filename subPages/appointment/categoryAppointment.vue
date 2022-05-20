@@ -52,7 +52,7 @@
 	import { useShopStore } from '@/stores/shop';
 	export default {
 		onLoad() {
-			this.where = `shopId=='${this.shop._id}'`
+			this.where = `shop_id=='${this.shop._id}'`
 			this.$nextTick(() => {
 				this.$refs.udb.loadData()
 			})
@@ -77,7 +77,7 @@
 		methods: {
 			onAppointment(id) {
 				uni.navigateTo({
-					url: `/subPages/appointment/appointment?cId=${id}`
+					url: `/subPages/appointment/appointment?category_id=${id}`
 				})
 			}
 		}
@@ -132,7 +132,7 @@
     flex-direction: column;
 }
 .card_image {
-	width: 320rpx;
+	width: 100%;
 	height: 320rpx;
 }
 .card_footer {

@@ -1,20 +1,21 @@
 <template>
-	<view class="card bg-white" @click="$emit('choose')">
+	<view class="card bg-white">
 		<view class="card__header">
-			<view class="card__thumb">
+			<view class="card__thumb"  @click="$emit('choose')">
 				<image :src="imageUrl" mode="scaleToFill" class="card__header__image"></image>
 			</view>
-			<view class="card__content">
-				<view>
+			<view class="card__content"  @click="$emit('choose')">
+				<view class="">
 					<view class="card__title">{{ title }}</view>
 					<view class="card__desc">{{ desc }}</view>
 				</view>
+					
 			</view>
-			<!-- <view class="card__right">
-				<uni-icons type="location" size="60rpx"></uni-icons>
-				<uni-icons type="phone" size="60rpx"></uni-icons>
-				<view>{{ status }}</view>
-			</view> -->
+			<view class="card__right">
+				<!-- <uni-icons type="location" size="60rpx"></uni-icons> -->
+				<uni-icons type="phone" size="60rpx" @click="$emit('callphone')"></uni-icons>
+				<view style="font-size: 12px;margin-top: 20rpx; text-align: center;" :class="status == '营业中' ? 'online' : 'offline' ">{{ status }}</view>
+			</view>
 		</view>
 		<view class="card__footer">
 			<slot name="footer">
@@ -47,7 +48,7 @@
 				type: String
 			}
 		},
-		emits: ['choose']
+		emits: ['choose', 'callphone']
 	}
 </script>
 
@@ -99,9 +100,16 @@
 }
 .card__footer {
 	flex: none;
+	margin-right: 18rpx;
 	text-align: right;
 	width: 100%;
 	font-size: 24rpx;
 	color: #323233;
+}
+.online {
+	color: #3cc51f;
+}
+.offline {
+	color: #646566;
 }
 </style>

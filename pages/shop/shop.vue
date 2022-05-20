@@ -32,9 +32,12 @@
 				<view v-else-if="loading">正在加载...</view>
 				<view v-else>
 					<view>
-						<template v-for="(item, index) in data" :key="index"><!-- 
-							<view @click="makePhone(item.phone)">{{ item.phone }}</view> -->
-							<diy-card :title="item.title" :desc="item.desc" :status="item.status" @choose="chooseShop(item)"><view slot="footer">距离1km</view></diy-card>
+						<template v-for="(item, index) in data" :key="index">
+							<diy-card :title="item.title" :desc="item.desc" :status="item.status" @choose="chooseShop(item)" @callphone="makePhone(item.phone)">
+								<template v-slot:footer>
+									<view >距离1km</view>
+								</template>
+							</diy-card>
 						</template>
 					</view>					
 				</view>
@@ -67,6 +70,7 @@ export default {
 	methods: {
 		...mapActions(useShopStore, ['setShop']),
 		hasAuthLocation() {
+			// #ifdef MP
 			uni.getSetting({
 				success: ({ authSetting }) => {
 					if (authSetting['scope.userLocation'] || authSetting['location']) {
@@ -78,6 +82,11 @@ export default {
 					}
 				}
 			});
+			// #endif
+			// #ifdef H5
+			this.hasLocation = false;
+			this.getLocation();
+			// #endif
 		},
 		onAuthLocation(){
 			uni.authorize({
@@ -86,6 +95,11 @@ export default {
 					console.log(e, 'authsuccess')
 					this.hasLocation = false;
 					this.getLocation();
+				},
+				fail() {
+					uni.showToast({
+						title: '获取位置失败！'
+					})
 				}
 			})
 		},
@@ -110,11 +124,14 @@ export default {
 				this.longitude = res.longitude;
 			})
 			.catch(err => {
+				uni.showToast({
+					title: '获取位置失败!',
+					icon: 'error'
+				})
 				console.error('getLocationErr:', err);
 			});
 		},
 		chooseShop(shop) {
-			console.log('选中门店')
 			this.setShop(shop);
 			uni.navigateTo({
 				url: `/subPages/appointment/categoryAppointment`

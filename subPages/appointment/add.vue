@@ -1,17 +1,19 @@
 <template>
 	<view>
-		<uni-calendar 
-			:insert="true"
-			:lunar="true" 
-			:start-date="'2019-3-2'"
-			:end-date="'2019-5-20'"
+		<diy-calendar
 			@change="change"
-			 />
+		>
+			
+		</diy-calendar>
 	</view>
 </template>
 
 <script>
+	import diyCalendar from '@/components/diy-calendar.vue'
 	export default {
+		components: {
+			diyCalendar
+		},
 		data() {
 			return {
 				
