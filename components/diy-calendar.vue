@@ -1,17 +1,19 @@
 <template>
-	<view class="wrapper">
-		<scroll-view scroll-x style="height: 40px; width: 635rpx;display: flex;" enable-flex>
-			<view
-				v-for="(item, index) in days"
-				:key="index"
-				class="dateBox"
-				:class="curDay == index ? 'dayActive' : '', item.type === 'disabled' ? 'dayDisabled' : ''"
-				@click="switchDay(index)"
-			>
-				<view class="week">{{ item.week }}</view>
-				<view class="text">{{ item._date }}</view>
+	<view class="wrapper d-flex">
+		<scroll-view scroll-x style="height: 44px; width: 635rpx;display: flex;" enable-flex>
+			<view class="d-flex s">
+				<view
+					v-for="(item, index) in days"
+					:key="index"
+					class="dateBox"
+					:class="[item.type === 'disabled' ? 'dayDisabled' : '', curDay == index ? 'dayActive' : '']"
+					@click="switchDay(index)"
+				>
+					<view class="week">{{ item.week }}</view>
+					<view class="text">{{ item._date }}</view>
+				</view>
+				<view class="dateBox1"></view>		
 			</view>
-			<view class="dateBox1"></view>
 		</scroll-view>
 
 		<view class="choose">
@@ -48,13 +50,12 @@ export default {
 	},
 	methods: {
 		switchDay(index) {
-			console.log(index, 'switchindex')
 			let day = this.days[index];
-			console.log(day, 'day----')
 			if (day.type !== 'disabled') {
+				// if(this.curDay == index) return
 				this.curDay = index
 				console.log(this.curDay, 'this.curDay')
-				this.$emit('change', day);
+				this.$emit('change', day);					
 			}
 		},
 		setWeek() {
@@ -111,7 +112,6 @@ export default {
 					type
 				});
 			}
-			console.log(days,'days')
 			let currentIndex = this.setCurrentIndex(days);
 			this.days = days
 			this.curDay = currentIndex
@@ -138,21 +138,23 @@ export default {
 	width: 90rpx;
 	align-items: center;
 	flex-shrink: 0;
-	border-radius: 0.25rem;
+	border-radius: 8rpx;
+	box-sizing: border-box;
+	padding: 6rpx 0;
 }
 .dateBox1 {
 	width: 20rpx;
 	flex-shrink: 0;
+	padding: 6rpx 0;
 }
 .week {
 	text-align: center;
-	font-size: 0.8rem;
+	font-size: 24rpx;
 }
 .text {
-	font-size: 0.6rem;
+	font-size: 24rpx;
 	text-align: center;
 	line-height: 34rpx;
-	height: 34rpx;
 }
 .choose {
 	width: 95rpx;
@@ -168,5 +170,8 @@ export default {
 .dayDisabled {
 	background: rgb(184, 184, 184);
 	color: #fff;
+}
+::-webkit-scrollbar {
+	display: none;
 }
 </style>

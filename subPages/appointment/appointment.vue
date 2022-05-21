@@ -33,7 +33,7 @@
 									class="rounded-pill card_btn"
 									round
 									size="mini"
-									@click="onAppointment(item._id)"
+									@click="onAppointment(item)"
 								>
 									预约
 								</button>
@@ -75,9 +75,10 @@
 			}
 		},
 		methods: {
-			onAppointment(id) {
+			onAppointment(item) {
+				uni.setStorageSync('appointment', item)
 				uni.navigateTo({
-					url: `/subPages/appointment/add?cId=${id}`
+					url: `/subPages/appointment/add`
 				})
 			}
 		}

@@ -1,6 +1,5 @@
 {
-	"pages": [
-		{
+	"pages": [{
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom"
@@ -24,7 +23,7 @@
 				"navigationBarTitleText": "我的"
 			}
 		}
-    ],
+	],
 	"subPackages": [{
 		"root": "subPages",
 		"pages": [{
@@ -32,18 +31,37 @@
 			"style": {
 				"navigationBarTitleText": "预约"
 			}
-		},{
+		}, {
 			"path": "appointment/appointment",
 			"style": {
 				"navigationBarTitleText": "预约"
 			}
-		},{
-			"path" : "appointment/add",
-			"style" : {
+		}, {
+			"path": "appointment/add",
+			"style": {
 				"navigationBarTitleText": "预约"
 			}
-		}
-        ]
+		}, {
+			"path": "pets/add",
+			"style": {
+				"navigationBarTitleText": "新增"
+			}
+		}, {
+			"path": "pets/edit",
+			"style": {
+				"navigationBarTitleText": "编辑"
+			}
+		}, {
+			"path": "pets/list",
+			"style": {
+				"navigationBarTitleText": "列表"
+			}
+		}, {
+			"path": "pets/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		}]
 	}],
 	"tabBar": {
 		"color": "#7A7E83",
@@ -55,17 +73,17 @@
 			"iconPath": "static/tarbar/home.png",
 			"selectedIconPath": "static/tarbar/home-fill.png",
 			"text": "首页"
-		},{
+		}, {
 			"pagePath": "pages/shop/shop",
 			"iconPath": "static/tarbar/task-management.png",
 			"selectedIconPath": "static/tarbar/task-management-fill.png",
 			"text": "预约"
-		},{
+		}, {
 			"pagePath": "pages/goods/goods",
 			"iconPath": "static/tarbar/add-cart.png",
 			"selectedIconPath": "static/tarbar/add-cart-fill.png",
 			"text": "买粮"
-		},{
+		}, {
 			"pagePath": "pages/user/user",
 			"iconPath": "static/tarbar/account.png",
 			"selectedIconPath": "static/tarbar/account-fill.png",

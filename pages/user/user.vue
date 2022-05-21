@@ -17,21 +17,27 @@
 			</view>
 			<view class="bg-white">
 				<view class="cell-group">
-					<view class="cell">
-						<uni-icons custom-prefix="iconfont" type="diy-chongwu" class="cell-left-icon"></uni-icons>
-						<text class="cell-title">我的宠物</text>
-						<uni-icons type="right" class="cell-right-icon"></uni-icons>
-					</view>
-					<view class="cell">
-						<uni-icons custom-prefix="iconfont" type="diy-ontimeshipment" class="cell-left-icon"></uni-icons>
-						<text class="cell-title">我的预约</text>
-						<uni-icons type="right" class="cell-right-icon"></uni-icons>
-					</view>
-					<view class="cell">
-						<uni-icons custom-prefix="iconfont" type="diy-searchcart" class="cell-left-icon"></uni-icons>
-						<text class="cell-title">我的订单</text>
-						<uni-icons type="right" class="cell-right-icon"></uni-icons>
-					</view>
+					<navigator url="/subPages/pets/list">
+						<view class="cell">
+							<uni-icons custom-prefix="iconfont" type="diy-chongwu" class="cell-left-icon"></uni-icons>
+							<text class="cell-title">我的宠物</text>
+							<uni-icons type="right" class="cell-right-icon"></uni-icons>
+						</view>
+					</navigator>
+					<navigator url="">
+						<view class="cell">
+							<uni-icons custom-prefix="iconfont" type="diy-ontimeshipment" class="cell-left-icon"></uni-icons>
+							<text class="cell-title">我的预约</text>
+							<uni-icons type="right" class="cell-right-icon"></uni-icons>
+						</view>						
+					</navigator>
+					<navigator url="">
+						<view class="cell">
+							<uni-icons custom-prefix="iconfont" type="diy-searchcart" class="cell-left-icon"></uni-icons>
+							<text class="cell-title">我的订单</text>
+							<uni-icons type="right" class="cell-right-icon"></uni-icons>
+						</view>						
+					</navigator>
 				</view>
 			</view>	
 		</view>		
