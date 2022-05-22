@@ -50,15 +50,15 @@
   },
 	"service": {
 		"sms": {
-			"name": "DCloud",
+			"name": "10330",
 			"codeExpiresIn": 300,
-			"smsKey": "your sms key",
-			"smsSecret": "your sms secret"
+			"smsKey": "6181ca3a8f892f79d89683cfec9a01bb",
+			"smsSecret": "83243685419e493d8f7972bb00e3800d"
 		},
 		"univerify": {
-			"appid":"your appid",
-			"apiKey": "your apiKey",
-			"apiSecret": "your apiSecret"
+			"appid":"__UNI__4D0D010",
+			"apiKey": "2103328a6f3a5a512e9ea2f2ccd3c59a",
+			"apiSecret": "72f2301b4ed82abdb88b4bc8611745fa"
 		}
 	}
 }

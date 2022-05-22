@@ -8,6 +8,8 @@
 					<!-- #ifdef MP-WEIXIN -->
 					<button class="login-button" @click="getUserProfile">登录</button>
 					<!-- #endif -->
+					<button @click="login">授权手机号</button>
+					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">btn</button>
 				</template>
 				<template v-else>
 					<image class="login-image" mode="scaleToFill" :src="userInfo.avatarUrl" />
@@ -56,31 +58,35 @@ export default {
 			
 		}
 	},
+	methods: {
+		login() {
+			uni.login({
+				provider: 'univerify',
+				univerifyStyle: { 
+			    fullScreen: true
+			  }
+			})
+		},
+		getPhoneNumber(option){
+			console.log(...option, 'getPhoneNumber')
+		},
+		getProvider(){
+			return new Promise((resolve, reject) => {
+				uni.getProvider({
+					service: 'oauth',
+					success: (result) => {
+						console.log(result, 'getProvider')
+						resolve((result))
+					},
+					fail: (err) => {
+						reject(err)
+					}
+				})				
+			})
+		}
+	},
 	setup(){
 		const userStore = useUserStore()
-		const getPhoneNumber = function(e) {
-			console.log('hha', e)
-			// #ifdef MP-ALIPAY
-			my.getPhoneNumber({
-			    success: (res) => {
-			        let encryptedData = JSON.parse(res.response);
-					console.log(encryptedData)
-					console.log(typeof encryptedData)
-					uniCloud.callFunction({
-						name: 'alipay-AES',
-						data: {
-							content : encryptedData.response,
-							sign : encryptedData.sign
-						}
-					})
-			    },
-			    fail: (res) => {
-			        console.log(res);
-			        console.log('getPhoneNumber_fail', res);
-			    },
-			});
-			// #endif
-		}
 		const onGetAuthorize = function(e) {
 			console.log(e,'eee')
 		}
