@@ -61,6 +61,17 @@
 			"style": {
 				"navigationBarTitleText": "详情"
 			}
+		}, {
+			"path": "login/login",
+			"style": {
+				"navigationBarTitleText": "夏天的风"
+			}
+		}, {
+			"path": "login/logout",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+
 		}]
 	}],
 	"tabBar": {

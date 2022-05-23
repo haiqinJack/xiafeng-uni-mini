@@ -4,6 +4,9 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
 	state: () => ({ 
 		userInfo: {},
+		sessionKey: '',
+		hasAuthLogin: false,
+		mobile: '',
 		token: uni.getStorageSync('uni_id_token') || '',
 		tokenExpired: uni.getStorageSync('uni_id_token_expired') || 0,
 		
@@ -11,7 +14,7 @@ export const useUserStore = defineStore('user', {
 	actions: {
 		async login() {
 			const { code } = await this.getProviderOauth()
-			console.log(code, 'code----')
+			
 			// #ifdef MP-WEIXIN
 			uniCloud.callFunction({
 				name: 'uni-id-mp',
@@ -25,6 +28,8 @@ export const useUserStore = defineStore('user', {
 				console.log(result, 'logRes')
 				if(result.code === 0) {//0表示成功
 					this.userInfo = result.userInfo,
+					this.sessionKey = result.sessionKey
+					this.mobile = result.userInfo.mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
 					uni.setStorageSync('uni_id_token', result.token)
 					uni.setStorageSync('uni_id_token_expired', result.tokenExpired)
 				}

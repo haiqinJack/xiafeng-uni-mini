@@ -202,7 +202,7 @@ exports.main = async (event, context) => {
 			console.log(res);
 			break;
 		case 'bindMobileByMpWeixin':
-			console.log(params);
+			console.log(params, 'bindMobileByMpWeixin');
 			let getSessionKeyRes = await uniID.getUserInfo({
 				uid: params.uid,
 				field: ['sessionKey']
@@ -211,7 +211,7 @@ exports.main = async (event, context) => {
 				return getSessionKeyRes
 			}
 			let sessionKey = getSessionKeyRes.userInfo.sessionKey
-			console.log(getSessionKeyRes);
+			console.log(getSessionKeyRes, 'getSessionKeyRes');
 			res = await uniID.wxBizDataCrypt({
 				...params,
 				sessionKey

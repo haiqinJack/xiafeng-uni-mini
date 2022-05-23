@@ -3,17 +3,14 @@
 	<view>
 		<view class="bg-light" style="min-height: 99vh;">
 			<view class="d-flex align-items-center flex-column" style="margin-bottom: 30px; padding-top: 30px;">
-				<template v-if="!userInfo.nickName">
+				<template v-if="hasAuthLogin">
 					<image class="login-image" mode="scaleToFill" src="~@/static/logo.jpeg" />
-					<!-- #ifdef MP-WEIXIN -->
-					<button class="login-button" @click="getUserProfile">登录</button>
-					<!-- #endif -->
-					<button @click="login">授权手机号</button>
-					<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">btn</button>
+					<button class="login-button" @click="to">授权登录</button>
+					<text>{{ hasAuthLogin }}</text>
 				</template>
 				<template v-else>
-					<image class="login-image" mode="scaleToFill" :src="userInfo.avatarUrl" />
-					<view class="nickName">{{userInfo.nickName}}</view>
+					<image class="login-image" mode="scaleToFill" src="~@/static/logo.jpeg" />
+					<view class="nickName">{{ mobile }}</view>
 				</template>
 				<view>{{ userInfo._id}}</view>
 			</view>
@@ -51,7 +48,7 @@ import { mapState } from 'pinia'
 
 export default {
 	computed:{
-		...mapState(useUserStore, ['userInfo', 'token', 'tokenExpired'])
+		...mapState(useUserStore, ['userInfo', 'token', 'tokenExpired', 'hasAuthLogin', 'mobile']),
 	},
 	data() {
 		return {
@@ -59,12 +56,9 @@ export default {
 		}
 	},
 	methods: {
-		login() {
-			uni.login({
-				provider: 'univerify',
-				univerifyStyle: { 
-			    fullScreen: true
-			  }
+		to() {
+			uni.navigateTo({
+				url: '/subPages/login/login'
 			})
 		},
 		getPhoneNumber(option){
@@ -139,7 +133,6 @@ export default {
 		}
 		
 		return {
-			getPhoneNumber,
 			onGetAuthorize,
 			onAuthError,
 			getPhoneNumberByWeixin,

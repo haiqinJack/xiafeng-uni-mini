@@ -44,7 +44,7 @@
 		            </image>
 		        </view>
 		        <view class="title">
-		            宠物粮食
+		            小夏臻选
 		        </view>
 		        <view style="font-size: x-small;" class="text-muted">
 		            简单便捷不社恐
