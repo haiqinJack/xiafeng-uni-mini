@@ -12,9 +12,9 @@
 				</uni-swiper-dot>
 			</view>
 		</unicloud-db>
-		<view style="height: 180px;position: relative; width: 700rpx;margin: 0 auto; margin-top: -40rpx; " class="d-flex align-middle bg-light my-radius-left my-radius-right" >
+		<view style="height: 180px;position: relative; width: 700rpx;margin: 0 auto; margin-top: -40rpx; " class="d-flex align-middle bg-light border-top-left-radius border-top-right-radius" >
 		    <view style="width: 50%;padding-top: 20rpx;" 
-				class="bg-white shadow d-flex flex-column align-items-center my-radius-left"
+				class="bg-white shadow d-flex flex-column align-items-center border-top-left-radius"
 				@click="to('/pages/shop/shop')"
 		    >
 		        <view>
@@ -33,7 +33,7 @@
 		        
 		    </view>
 		    <view style="width: 50%; padding-top: 20rpx;"
-				class="bg-white shadow d-flex flex-column align-items-center my-radius-right"      
+				class="bg-white shadow d-flex flex-column align-items-center border-top-right-radius "      
 				@click="to('/pages/goods/goods')"
 			>
 		        <view>
@@ -48,6 +48,46 @@
 		        </view>
 		        <view style="font-size: x-small;" class="text-muted">
 		            简单便捷不社恐
+		        </view>
+		        
+		    </view>
+		</view>
+		<view style="height: 180px;position: relative; width: 700rpx;margin: 0 auto; margin-top: 0; " class="d-flex align-middle bg-light border-bottom-left-radius border-bottom-right-radius" >
+		    <view style="width: 50%;padding-top: 20rpx;" 
+				class="bg-white shadow d-flex flex-column align-items-center border-bottom-left-radius "
+				@click="n"
+		    >
+		        <view>
+		            <image
+		                style="width: 140rpx; height: 140rpx;"
+		                src="~@/static/jiyang.png"
+		            >
+		            </image>
+		        </view>
+		        <view class="title">
+		            寄养服务
+		        </view>
+		        <view style="font-size: x-small;" class="text-muted">
+		            一条龙寄养服务
+		        </view>
+		        
+		    </view>
+		    <view style="width: 50%; padding-top: 20rpx;"
+				class="bg-white shadow d-flex flex-column align-items-center border-bottom-right-radius"      
+				@click="n"
+			>
+		        <view>
+		            <image
+		                style="width: 140rpx; height: 140rpx;"
+		                src="~@/static/cat.png"
+		            >
+		            </image>
+		        </view>
+		        <view class="title">
+		            活体销售
+		        </view>
+		        <view style="font-size: x-small;" class="text-muted">
+		            小夏精选健康宠物
 		        </view>
 		        
 		    </view>
@@ -72,6 +112,12 @@
 			change(e) {
 				console.log(e.detail.current)
 				this.current = e.detail.current;
+			},
+			n() {
+				uni.showToast({
+					title: '暂未开放',
+					icon:"error"
+				})
 			}
 		}
 	}
@@ -80,21 +126,24 @@
 <style>
 .swiper-box {
 	width: 750rpx;
-	height: 600rpx;
+	height: 500rpx;
 }
 .swiper-image {
 	width: 750rpx;
-	height: 600rpx;
+	height: 500rpx;
 }
-.my-radius-left {
-    border-top-left-radius: 30rpx;
+.border-top-left-radius {
+	border-top-left-radius: 30rpx;
+}
+.border-top-right-radius {
+    border-top-right-radius: 30rpx;
+}
+.border-bottom-left-radius {
     border-bottom-left-radius: 30rpx;
 }
-.my-radius-right {
-    border-top-right-radius: 30rpx;
+.border-bottom-right-radius {
     border-bottom-right-radius: 30rpx;
 }
-
 .title {
 	font-size: 48rpx;
 	line-height: 60rpx;
