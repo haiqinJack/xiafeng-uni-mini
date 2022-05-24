@@ -1,34 +1,23 @@
 <template>
 	<view>
-		<diy-calendar :restWeek="shop.restWeek" @change="change"></diy-calendar>
-		<view class="times">
-			<unicloud-db 
-				ref="udb" 
-				v-slot:default="{data, loading, error, options}" 
-				collection="appointment" 
-				:where="where" 
-				getone 
-				loadtime="manual" 
-				@load="onDBLoad" 
-				@error="onDBerror"
-			>
-				<view v-if="error">{{error.message}}</view>
-				<view v-else-if="data">
-					<view v-for="(item, index) in data.hours" 
-						:key="index" class="time" 
-						:class="[hoursIndex == index ? 'timeActive' : '']" 
-						@click="chooseHours(index)"
-					>
-						<view v-if="item.info">
-							<view class="hour">{{ item.hour + ':00' }}</view>
-							<view class="info">{{ item.info }}</view>
-						</view>
-						<view v-else>{{ item.hour }}:00</view>
+		<diy-calendar :restWeek="shop.restWeek" @change="change"></diy-calendar>			
+		<template v-if="hours.length > 0">
+			<view class="times">
+				<view v-for="(item, index) in formarHours"
+					:key="index" class="time" 
+					:class="[hoursIndex == index ? 'timeActive' : '']" 
+					@click="chooseHours(index)"
+				>
+					<view v-if="item.info">
+						<view class="hour">{{ item.hour + ':00' }}</view>
+						<view class="info">{{ item.info }}</view>
 					</view>
+					<view v-else>{{ item.hour }}:00</view>
 				</view>
-				<view class="nullTime" v-else>暂无可预约时间段</view>
-			</unicloud-db>				
-		</view>
+			</view>
+		</template>
+		<view class="nullTime" v-else>暂无可预约时间段</view>	
+		
 	</view>
 </template>
 
@@ -46,24 +35,39 @@ export default {
 		console.log(project, 'project')
 	},
 	computed: {
-		...mapState(useShopStore, ['shop'])
+		...mapState(useShopStore, ['shop']),
+		formarHours() {//初始化格式前台看的清楚
+			let arr = []
+			this.hours.forEach(item => {
+				arr.push({
+					hour: item,
+					info: ''
+				})
+			})
+			return arr
+		},
 	},
 	data() {
+
 		return {
 			where: '',
-			hours: []
+			hours: [],
+			hoursIndex: -1,
 		};
 	},
 	methods: {
 		change() {},
-		chooseHours(index){},
+		chooseHours(index){
+			this.hoursIndex = index
+		},
 		onDBLoad(){},
 		onDBerror() {
 			uni.showToast({
 				title: '数据加载失败！请稍后再试',
 				icon:'error'
 			})
-		}
+		},
+		
 	}
 };
 </script>
@@ -90,6 +94,7 @@ export default {
 
 .info {
 	font-size: 20rpx;
+	overflow: hidden;
 }
 
 .nullTime {

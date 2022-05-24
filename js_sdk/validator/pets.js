@@ -54,6 +54,17 @@ const validator = {
     ],
     "label": "宠物品种"
   },
+  "vaccines": {
+    "rules": [
+      {
+        "required": true
+      },
+      {
+        "format": "string"
+      }
+    ],
+    "label": "疫苗情况"
+  },
   "pet_sex": {
     "rules": [
       {
@@ -90,9 +101,6 @@ const validator = {
   },
   "isSterilization": {
     "rules": [
-      {
-        "required": true
-      },
       {
         "format": "string"
       },

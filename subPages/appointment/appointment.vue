@@ -18,7 +18,7 @@
 							<image 
 								class="card_image"
 								mode="aspectFill"
-								src="/static/logo.jpeg" 
+								src="~@/static/logo.jpeg" 
 							/>
 							<view class="font-weight-bold font1">
 								{{ item.title }}

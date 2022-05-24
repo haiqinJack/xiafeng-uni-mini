@@ -13,8 +13,7 @@ export const useUserStore = defineStore('user', {
 	}),
 	actions: {
 		async login() {
-			const { code } = await this.getProviderOauth()
-			
+			const { code } = await this.getProviderOauth()	
 			// #ifdef MP-WEIXIN
 			uniCloud.callFunction({
 				name: 'uni-id-mp',

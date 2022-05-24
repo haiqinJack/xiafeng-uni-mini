@@ -1,4 +1,7 @@
 <template>
+	<view class="">
+		
+	
 	<view class="uni-container">
 		<uni-forms ref="form" :value="formData" validate-trigger="submit" err-show-type="toast">
 			<uni-forms-item name="avatarUrl" label="宠物头像">
@@ -7,29 +10,35 @@
 			<uni-forms-item name="nickname" label="宠物昵称" required><uni-easyinput v-model="formData.nickname" trim="both"></uni-easyinput></uni-forms-item>
 			<uni-forms-item name="phone" label="联系方式" required><uni-easyinput v-model="formData.phone" trim="both"></uni-easyinput></uni-forms-item>
 			<uni-forms-item name="pet_group" label="宠物种类" required>
-				<uni-data-checkbox @change="changePetGroup" v-model="formData.pet_group" collection="pet-group" field="_id as value, title as text" trim="both"></uni-data-checkbox>
+				<uni-data-checkbox @change="choosePetGroup" v-model="formData.pet_group" collection="pet-group" field="_id as value, title as text" trim="both"></uni-data-checkbox>
 			</uni-forms-item>
 			<uni-forms-item name="pet_type" label="宠物品种" required>
-				<uni-data-picker placeholder="请选择宠物品种" :readonly="formOptions.readonly_pet_type" v-model="formData.pet_type" :localdata="formOptions.pet_type" trim="both"></uni-data-picker>
-			</uni-forms-item>
-			<uni-forms-item name="vaccines" label="疫苗情况" required>
-				<uni-data-picker placeholder="请选择疫苗情况" :readonly="formOptions.readonly_vaccines" v-model="formData.vaccines" :localdata="formOptions.vaccines"></uni-data-picker>
+				<picker mode="selector" class="pickerBox"
+					range-key="text"
+					:value="listIndex"
+					:range="formOptions.pet_type_localdata" @change="onSelect">
+				{{ formOptions.pet_type_localdata_name }}
+				</picker>
 			</uni-forms-item>
 			<uni-forms-item name="pet_sex" label="性别" required>
 				<uni-data-checkbox v-model="formData.pet_sex" :localdata="formOptions.pet_sex_localdata" trim="both"></uni-data-checkbox>
 			</uni-forms-item>
 			<uni-forms-item name="pet_weight" label="体重(kg)" required><uni-easyinput type="number" v-model="formData.pet_weight"></uni-easyinput></uni-forms-item>
-			<uni-forms-item name="isSterilization" label="是否绝育">
+			<uni-forms-item name="isSterilization" label="是否绝育" required>
 				<uni-data-checkbox v-model="formData.isSterilization" :localdata="formOptions.isSterilization_localdata"></uni-data-checkbox>
 			</uni-forms-item>
 			<uni-forms-item name="birthday" label="出生年月"><uni-datetime-picker return-type="date" v-model="formData.birthday"></uni-datetime-picker></uni-forms-item>
 			<view class="uni-button-group"><button type="primary" class="uni-button" @click="submit">提交</button></view>
 		</uni-forms>
 	</view>
+	
+	</view>
 </template>
 
 <script>
 import { validator } from '../../js_sdk/validator/pets.js';
+// import pinyin from 'js-pinyin'
+// pinyin.setOptions({checkPolyphone: false, charCase: 0});
 
 const db = uniCloud.database();
 const dbCollectionName = 'pets';
@@ -52,19 +61,17 @@ export default {
 			phone: '',
 			pet_group: '',
 			pet_type: '',
-			vaccines: '',
 			pet_sex: '',
 			pet_weight: null,
 			isSterilization: 0,
 			birthday: null
 		};
 		return {
+			listIndex: -1,
 			formData,
 			formOptions: {
-				readonly_pet_type: true,
-				readonly_vaccines: true,
-				pet_type: [],
-				vaccines: [],
+				pet_type_localdata: [],
+				pet_type_localdata_name: '',
 				pet_sex_localdata: [
 					{
 						value: '公',
@@ -95,19 +102,32 @@ export default {
 		this.$refs.form.setRules(this.rules);
 	},
 	methods: {
-		changePetGroup(e) {
-			db.collection('pet-type').where(`pet_group_id=='${e.detail.data.value}'`).field('_id as value, title as text, order').orderBy('order desc').get()
-			.then(({ result }) => {
-				console.log(result.data, 'result')
-				this.formOptions.pet_type = result.data
-				this.formOptions.readonly_pet_type = false
-			})
-			db.collection('vaccines').where(`pet_group_id=='${e.detail.data.value}'`).field('_id as value, title as text, order').orderBy('order desc').get()
-			.then(({ result }) => {
-				console.log(result.data, 'vaccines')
-				this.formOptions.vaccines = result.data
-				this.formOptions.readonly_vaccines = false
-			})
+		onSelect(e) {
+			this.listIndex = e.detail.value
+			//提交表单用的id
+			this.formData.pet_type = this.formOptions.pet_type_localdata[e.detail.value].value
+			//用来显示的text
+			this.formOptions.pet_type_localdata_name = this.formOptions.pet_type_localdata[e.detail.value].text
+			console.log(e.detail)
+		},
+		choosePetGroup(e) {
+			db.collection('pet-type')
+				.where(`pet_group_id=='${this.formData.pet_group}'`)
+				.field('_id as value, title as text, order')
+				.get()
+				.then(({ result }) => {
+					this.formOptions.pet_type_localdata_name = ''//清空宠物种类
+					this.formData.pet_type = '' //清空宠物种类
+					this.formOptions.pet_type_localdata = result.data;
+					console.log(this.formOptions.pet_type_localdata, 'type')
+				});
+		},
+		onLoad(data) {
+			console.log(data, 'onload');
+			return data;
+		},
+		changePetType() {
+			console.log('???', this.formData.pet_type);
 		},
 		/**
 		 * 验证表单并提交
@@ -158,7 +178,30 @@ export default {
 .uni-container {
 	padding: 15px;
 }
-
+.pickerBox {
+	width: 100%;
+	flex: 1;
+	position: relative;
+	text-align: left;
+	color: #333;
+	font-size: 14px;
+	display: flex;
+	box-sizing: border-box;
+	flex-direction: row;
+	align-items: center;
+	border: 1px solid rgb(229, 229, 229);
+	border-radius: 4px;
+	min-height: 36px;
+}
+.actionsBox {
+    max-height: 70vh;
+    overflow: scroll;
+}
+.actionsItem {
+    line-height: 3rem;
+    text-align: center;
+    border-bottom: 1rpx solid rgba(182, 182, 182, 0.26);
+}
 .uni-input-border,
 .uni-textarea-border {
 	width: 100%;

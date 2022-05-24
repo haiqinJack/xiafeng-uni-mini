@@ -14,7 +14,10 @@
         <uni-data-checkbox v-model="formData.pet_group" collection="pet-group" field="_id as value, title as text" trim="both"></uni-data-checkbox>
       </uni-forms-item>
       <uni-forms-item name="pet_type" label="宠物品种" required>
-        <uni-data-checkbox v-model="formData.pet_type" collection="pet-type" field="_id as value, title as text" trim="both"></uni-data-checkbox>
+        <uni-data-picker placeholder="请选择宠物品种" v-model="formData.pet_type" collection="pet-type" field="_id as value, title as text" trim="both"></uni-data-picker>
+      </uni-forms-item>
+      <uni-forms-item name="vaccines" label="疫苗情况" required>
+        <uni-data-picker placeholder="请选择疫苗情况" v-model="formData.vaccines" collection="vaccines" field="_id as value, title as text"></uni-data-picker>
       </uni-forms-item>
       <uni-forms-item name="pet_sex" label="性别" required>
         <uni-data-checkbox v-model="formData.pet_sex" :localdata="formOptions.pet_sex_localdata" trim="both"></uni-data-checkbox>
@@ -22,7 +25,7 @@
       <uni-forms-item name="pet_weight" label="体重(kg)" required>
         <uni-easyinput type="number" v-model="formData.pet_weight"></uni-easyinput>
       </uni-forms-item>
-      <uni-forms-item name="isSterilization" label="是否绝育" required>
+      <uni-forms-item name="isSterilization" label="是否绝育">
         <uni-data-checkbox v-model="formData.isSterilization" :localdata="formOptions.isSterilization_localdata"></uni-data-checkbox>
       </uni-forms-item>
       <uni-forms-item name="birthday" label="出生年月">
@@ -59,6 +62,7 @@
         "phone": "",
         "pet_group": "",
         "pet_type": "",
+        "vaccines": "",
         "pet_sex": "",
         "pet_weight": null,
         "isSterilization": 0,
@@ -147,7 +151,7 @@
         uni.showLoading({
           mask: true
         })
-        db.collection(dbCollectionName).doc(id).field("avatarUrl,nickname,phone,pet_group,pet_type,pet_sex,pet_weight,isSterilization,birthday").get().then((res) => {
+        db.collection(dbCollectionName).doc(id).field("avatarUrl,nickname,phone,pet_group,pet_type,vaccines,pet_sex,pet_weight,isSterilization,birthday").get().then((res) => {
           const data = res.result.data[0]
           if (data) {
             this.formData = data
