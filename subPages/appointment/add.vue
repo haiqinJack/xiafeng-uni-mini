@@ -17,7 +17,21 @@
 			</view>
 		</template>
 		<view class="nullTime" v-else>暂无可预约时间段</view>	
-		
+		<view style="box-sizing: border-box; width: 750rpx; padding: 0 10rpx; overflow: hidden;">
+			<text>选择服务宠物</text>
+			<scroll-view scroll-x enable-flex style="height: 160rpx; width: 750rpx;display: flex;">
+				<view class="d-flex">
+					<unicloud-db v-slot:default="{data, loading, error, options}" collection="pets">
+						<view v-if="error">{{error.message}}</view>
+						<view v-else>
+							<view v-for="(item, index) in data" :key="index">
+								<image :src="item.avatarUrl.url" style="width: 160rpx;height: 160rpx;"></image>
+							</view>
+						</view>
+					</unicloud-db>
+				</view>
+			</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -83,7 +97,7 @@ export default {
 .time {
 	height: 30px;
 	margin-top: 40rpx;
-	width: 126rpx;
+	width: 124rpx;
 	text-align: center;
 	margin-left: 10rpx;
 	padding: 10rpx 5rpx;

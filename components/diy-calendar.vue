@@ -1,7 +1,7 @@
 <template>
 	<view class="wrapper d-flex">
 		<scroll-view scroll-x style="height: 44px; width: 635rpx;display: flex;" enable-flex>
-			<view class="d-flex s">
+			<view class="d-flex">
 				<view
 					v-for="(item, index) in days"
 					:key="index"
