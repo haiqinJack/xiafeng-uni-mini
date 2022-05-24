@@ -7,20 +7,39 @@
 			<uni-forms-item name="nickname" label="宠物昵称" required><uni-easyinput v-model="formData.nickname" trim="both"></uni-easyinput></uni-forms-item>
 			<uni-forms-item name="phone" label="联系方式" required><uni-easyinput v-model="formData.phone" trim="both"></uni-easyinput></uni-forms-item>
 			<uni-forms-item name="pet_group" label="宠物种类" required>
-				<uni-data-checkbox @change="changePetGroup" v-model="formData.pet_group" collection="pet-group" field="_id as value, title as text" trim="both"></uni-data-checkbox>
+				<uni-data-checkbox
+					placeholder="请选择宠物种类"
+					v-model="formData.pet_group"
+					@change="onChange"
+					collection="pet-group"
+					field="_id as value, title as text"
+					trim="both"
+				></uni-data-checkbox>
 			</uni-forms-item>
 			<uni-forms-item name="pet_type" label="宠物品种" required>
-				<uni-data-picker placeholder="请选择宠物品种" :readonly="formOptions.readonly_pet_type" v-model="formData.pet_type" :localdata="formOptions.pet_type" trim="both"></uni-data-picker>
+				<uni-data-picker
+					placeholder="请选择宠物品种"
+					v-model="formData.pet_type"
+					:localdata="formOptions.pet_type"
+					:readonly="readonly_pet_type"
+					trim="both"
+				></uni-data-picker>
 			</uni-forms-item>
 			<uni-forms-item name="vaccines" label="疫苗情况" required>
-				<uni-data-picker placeholder="请选择疫苗情况" :readonly="formOptions.readonly_vaccines" v-model="formData.vaccines" :localdata="formOptions.vaccines"></uni-data-picker>
+				<uni-data-picker
+					placeholder="请选择疫苗情况"
+					v-model="formData.vaccines"
+					:localdata="formOptions.vaccines"
+					:readonly="readonly_vaccines"
+					trim="both"
+				></uni-data-picker>
 			</uni-forms-item>
 			<uni-forms-item name="pet_sex" label="性别" required>
 				<uni-data-checkbox v-model="formData.pet_sex" :localdata="formOptions.pet_sex_localdata" trim="both"></uni-data-checkbox>
 			</uni-forms-item>
 			<uni-forms-item name="pet_weight" label="体重(kg)" required><uni-easyinput type="number" v-model="formData.pet_weight"></uni-easyinput></uni-forms-item>
 			<uni-forms-item name="isSterilization" label="是否绝育">
-				<uni-data-checkbox v-model="formData.isSterilization" :localdata="formOptions.isSterilization_localdata"></uni-data-checkbox>
+				<uni-data-checkbox v-model="formData.isSterilization" :localdata="formOptions.isSterilization_localdata" trim="both"></uni-data-checkbox>
 			</uni-forms-item>
 			<uni-forms-item name="birthday" label="出生年月"><uni-datetime-picker return-type="date" v-model="formData.birthday"></uni-datetime-picker></uni-forms-item>
 			<view class="uni-button-group"><button type="primary" class="uni-button" @click="submit">提交</button></view>
@@ -45,6 +64,14 @@ function getValidator(fields) {
 }
 
 export default {
+	computed: {
+		readonly_vaccines() {
+			return this.formOptions.vaccines.length == 0;
+		},
+		readonly_pet_type() {
+			return this.formOptions.pet_type.length == 0;
+		}
+	},
 	data() {
 		let formData = {
 			avatarUrl: null,
@@ -53,16 +80,14 @@ export default {
 			pet_group: '',
 			pet_type: '',
 			vaccines: '',
-			pet_sex: '',
+			pet_sex: '公',
 			pet_weight: null,
-			isSterilization: 0,
+			isSterilization: '否',
 			birthday: null
 		};
 		return {
 			formData,
 			formOptions: {
-				readonly_pet_type: true,
-				readonly_vaccines: true,
 				pet_type: [],
 				vaccines: [],
 				pet_sex_localdata: [
@@ -77,11 +102,11 @@ export default {
 				],
 				isSterilization_localdata: [
 					{
-						value: '1',
+						value: '是',
 						text: '是'
 					},
 					{
-						value: '0',
+						value: '否',
 						text: '否'
 					}
 				]
@@ -95,19 +120,34 @@ export default {
 		this.$refs.form.setRules(this.rules);
 	},
 	methods: {
-		changePetGroup(e) {
-			db.collection('pet-type').where(`pet_group_id=='${e.detail.data.value}'`).field('_id as value, title as text, order').orderBy('order desc').get()
-			.then(({ result }) => {
-				console.log(result.data, 'result')
-				this.formOptions.pet_type = result.data
-				this.formOptions.readonly_pet_type = false
-			})
-			db.collection('vaccines').where(`pet_group_id=='${e.detail.data.value}'`).field('_id as value, title as text, order').orderBy('order desc').get()
-			.then(({ result }) => {
-				console.log(result.data, 'vaccines')
-				this.formOptions.vaccines = result.data
-				this.formOptions.readonly_vaccines = false
-			})
+		async onChange(e) {
+			let pet_group_id = e.detail.value;
+			uni.showLoading({
+				mask: true
+			});
+
+			db.collection('pet-type')
+				.where(`pet_group_id=='${pet_group_id}'`)
+				.field('_id as value, title as text')
+				.get()
+				.then(({ result }) => {
+					this.formData.pet_type = '';
+					this.formOptions.pet_type = result.data;
+				})
+				.finally(() => {
+					uni.hideLoading();
+				});
+			db.collection('vaccines')
+				.where(`pet_group_id=='${pet_group_id}'`)
+				.field('_id as value, title as text')
+				.get()
+				.then(({ result }) => {
+					this.formData.vaccines = '';
+					this.formOptions.vaccines = result.data;
+				})
+				.finally(() => {
+					uni.hideLoading();
+				});
 		},
 		/**
 		 * 验证表单并提交
