@@ -44,6 +44,11 @@
 				"navigationBarTitleText": "预约"
 			}
 		}, {
+			"path": "appointment/user",
+			"style": {
+				"navigationBarTitleText": "我的预约"
+			}
+		}, {
 			"path": "pets/add",
 			"style": {
 				"navigationBarTitleText": "新增宠物"
@@ -73,7 +78,6 @@
 			"style": {
 				"navigationBarTitleText": "个人资料"
 			}
-
 		}]
 	}],
 	"tabBar": {

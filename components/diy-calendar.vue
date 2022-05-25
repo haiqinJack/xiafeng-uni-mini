@@ -52,9 +52,8 @@ export default {
 		switchDay(index) {
 			let day = this.days[index];
 			if (day.type !== 'disabled') {
-				// if(this.curDay == index) return
+				if(this.curDay == index) return
 				this.curDay = index
-				console.log(this.curDay, 'this.curDay')
 				this.$emit('change', day);					
 			}
 		},

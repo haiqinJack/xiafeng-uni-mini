@@ -28,6 +28,9 @@ const validator = {
       },
       {
         "format": "string"
+      },
+      {
+        "pattern": "^\\+?[0-9-]{3,20}$"
       }
     ],
     "label": "联系方式"
