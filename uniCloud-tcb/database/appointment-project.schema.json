@@ -1,0 +1,106 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["category_id", "bannerfile", "title", "hours", "price"],
+	"permission": {
+		"read": true,
+		"create": "auth.uid != null",
+		"update": "auth.uid != null",
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"category_id": {
+			"bsonType": "string",
+			"title": "所属分类",
+			"foreignKey": "appointment-category._id",
+			"enum": {
+				"collection": "appointment-category",
+				"field": "_id as value, title as text"
+			}
+		},
+		"bannerfile": {
+			"bsonType": "file",
+			"fileMediaType": "image",
+			"title": "图片文件",
+			"description": "建议宽度375px;高度300px;"
+		},
+		"title": {
+			"bsonType": "string",
+			"trim": "both",
+			"title": "标题"
+		},
+		"hours": {
+			"bsonType": "array",
+			"title": "可预约时间段",
+			"enum": [{
+				"value": "9",
+				"text": "9:00~10:00"
+			}, {
+				"value": "10",
+				"text": "10:00~11:00"
+			}, {
+				"value": "11",
+				"text": "11:00~12:00"
+			}, {
+				"value": "12",
+				"text": "12:00~13:00"
+			}, {
+				"value": "13",
+				"text": "13:00~14:00"
+			}, {
+				"value": "14",
+				"text": "14:00~15:00"
+			}, {
+				"value": "15",
+				"text": "15:00~16:00"
+			}, {
+				"value": "16",
+				"text": "16:00~17:00"
+			}, {
+				"value": "17",
+				"text": "17:00~18:00"
+			}, {
+				"value": "18",
+				"text": "18:00~19:00"
+			}, {
+				"value": "19",
+				"text": "19:00~20:00"
+			}, {
+				"value": "20",
+				"text": "20:00~21:00"
+			}, {
+				"value": "21",
+				"text": "21:00~22:00"
+			}, {
+				"value": "22",
+				"text": "22:00~23:00"
+			}]
+		},
+		"price": {
+			"bsonType": "int",
+			"title": "价格",
+			"description": "单位：分"
+		},
+		"order": {
+			"bsonType": "int",
+			"title": "排序",
+			"description": "数字越大越靠前",
+			"defaultValue": 0
+		},
+		"_createTime": {
+			"bsonType": "timestamp",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"_updateTime": {
+			"bsonType": "timestamp",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

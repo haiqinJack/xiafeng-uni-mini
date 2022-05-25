@@ -1,0 +1,69 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["project_id", "title", "bannerfile", "price"],
+	"permission": {
+		"read": true,
+		"create": "auth.uid != null",
+		"update": "auth.uid != null",
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"project_id": {
+			"bsonType": "array",
+			"foreignKey": "appointment-project._id",
+			"enum": {
+				"collection": "appointment-project",
+				"field": "_id as value, title as text "
+			}
+		},
+		"title": {
+			"bsonType": "string",
+			"trim": "both",
+			"title": "标题"
+		},
+		"bannerfile": {
+			"bsonType": "file",
+			"fileMediaType": "image",
+			"title": "图片文件",
+			"description": "建议宽度375px;高度300px;"
+		},
+		"price": {
+			"bsonType": "int",
+			"title": "价格",
+			"description": "单位：分"
+		},
+		"order": {
+			"bsonType": "int",
+			"title": "排序",
+			"description": "数字越大越靠前",
+			"defaultValue": 0
+		},
+		"detailed": {
+			"bsonType": "array",
+			"arrayType": "file",
+			"multiple": true,
+			"fileMediaType": "image",
+			"title": "详情图"
+		},
+		"choose": {
+			"bsonType": "bool",
+			"forceDefaultValue": false
+		},
+		"_createTime": {
+			"bsonType": "timestamp",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"_updateTime": {
+			"bsonType": "timestamp",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

@@ -1,0 +1,7 @@
+{
+  "name": "pay-cb",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

@@ -1,0 +1,36 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["title"],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"pet_group_id": {
+			"bsonType": "string",
+			"title": "宠物种类",
+			"foreignKey": "pet-group._id",
+			"enum": {
+				"collection": "pet-group",
+				"field": "_id as value, title as text"
+			}
+		},
+		"title": {
+			"bsonType": "string",
+			"title": "已接种疫苗",
+			"description": "第一针妙三多"
+		},
+		"order": {
+			"bsonType": "int",
+			"title": "排序",
+			"defaultValue": 0,
+			"description": "默认数值越大靠前"
+		}
+	}
+}

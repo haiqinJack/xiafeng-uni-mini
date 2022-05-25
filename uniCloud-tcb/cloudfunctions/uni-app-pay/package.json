@@ -1,0 +1,10 @@
+{
+  "name": "uni-pay",
+  "dependencies": {
+    "uni-pay": "file:../../../uni_modules/uni-pay/uniCloud/cloudfunctions/common/uni-pay",
+    "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

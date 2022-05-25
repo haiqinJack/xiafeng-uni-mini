@@ -1,0 +1,113 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["title", "desc", "iconPath", "latitude", "longitude", "width", "height", "phone"],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"iconPath": {
+			"bsonType": "file",
+			"title": "门店logo",
+			"description": "门店logo"
+		},
+		"title": {
+			"bsonType": "string",
+			"trim": "both",
+			"title": "门店标题",
+			"description": "门店标题"
+		},
+		"desc": {
+			"bsonType": "string",
+			"trim": "both",
+			"title": "门店详细地址",
+			"description": "门店详细地址"
+		},
+		"phone": {
+			"bsonType": "int",
+			"title": "门店管理员手机号",
+			"pattern": "^\\+?[0-9-]{3,20}$"
+		},
+		"width": {
+			"bsonType": "string",
+			"title": "logo图片宽度",
+			"trim": "both",
+			"description": "默认值，不需要修改",
+			"forceDefaultValue": "100rpx"
+		},
+		"height": {
+			"bsonType": "string",
+			"title": "logo图片高度",
+			"trim": "both",
+			"description": "默认值，不需要修改",
+			"forceDefaultValue": "100rpx"
+		},
+		"latitude": {
+			"bsonType": "double",
+			"title": "纬度"
+		},
+		"longitude": {
+			"bsonType": "double",
+			"title": "经度"
+		},
+		"status": {
+			"bsonType": "string",
+			"title": "门店状态",
+			"description": "门店状态",
+			"enum": ["营业中", "休息中"]
+		},
+		"restWeek": {
+			"bsonType": "array",
+			"title": "门店休息日",
+			"description": "设置门店休息日",
+			"enum": [{
+					"value": 0,
+					"text": "星期天"
+				}, {
+					"value": 1,
+					"text": "星期一"
+				},
+				{
+					"value": 2,
+					"text": "星期二"
+				},
+				{
+					"value": 3,
+					"text": "星期三"
+				},
+				{
+					"value": 4,
+					"text": "星期四"
+				},
+				{
+					"value": 5,
+					"text": "星期五"
+				},
+				{
+					"value": 6,
+					"text": "星期六"
+				}
+			]
+		},
+		"_createTime": {
+			"bsonType": "timestamp",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"_updateTime": {
+			"bsonType": "timestamp",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+
+
+	}
+}

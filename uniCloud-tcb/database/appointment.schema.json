@@ -1,0 +1,37 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["year", "month", "date", "hour", "appointment_user_id"],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"year": {
+			"bsonType": "int",
+			"title": "年"
+		},
+		"month": {
+			"bsonType": "int",
+			"title": "月"
+		},
+		"date": {
+			"bsonType": "int",
+			"title": "日"
+		},
+		"hour": {
+			"bsonType": "int",
+			"title": "时"
+		},
+		"appointment_user_id": {
+			"bsonType": "array",
+			"foreignKey": "appointment-user._id",
+			"title": "已约用户"
+		}
+	}
+}

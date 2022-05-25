@@ -1,0 +1,119 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["shop_id", "appointment_project_id", "phone", "pay_pirce", "pay_type", "status", "year", "month",
+		"date", "hour"
+	],
+	"permission": {
+		"read": "doc.user_id == auth.uid",
+		"create": true,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"user_id": {
+			"bsonType": "string",
+			"description": "用户ID",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
+		},
+		"appointment_project_id": {
+			"bsonType": "string",
+			"foreignKey": "appointment-project._id",
+			"title": "预约项目",
+			"description": "关联的预约项目"
+		},
+		"pet_id": {
+			"bsonType": "string",
+			"title": "宠物",
+			"foreignKey": "pets._id",
+			"enum": {
+				"collection": "pets",
+				"field": "_id as value, nickname as text"
+			}
+		},
+		"shop_id": {
+			"bsonType": "string",
+			"foreignKey": "shops._id",
+			"title": "门店",
+			"description": "门店"
+
+		},
+		"phone": {
+			"bsonType": "string",
+			"trim": "both",
+			"title": "联系方式"
+		},
+		"pay_pirce": {
+			"bsonType": "int",
+			"title": "已支付金额"
+		},
+		"pay_type": {
+			"bsonType": "string",
+			"title": "支付渠道",
+			"enum": [{
+				"value": "alipay",
+				"text": "支付宝支付"
+			}, {
+				"value": "wxpay",
+				"text": "微信支付"
+			}, {
+				"value": "mtpay",
+				"text": "美团券"
+			}]
+		},
+		"pay_status": {
+			"bsonType": "string",
+			"title": "支付状态",
+			"enum": [{
+				"value": "alipay",
+				"text": "已支付"
+			}, {
+				"value": "wxpay",
+				"text": "未支付"
+			}]
+		},
+		"pay_id": {
+			"bsonType": "string",
+			"title": "支付编号",
+			"description": "支付账单中的编号"
+		},
+		"status": {
+			"bsonType": "string",
+			"enum": ["预约中", "服务完成"]
+		},
+		"year": {
+			"bsonType": "int",
+			"title": "年"
+		},
+		"month": {
+			"bsonType": "int",
+			"title": "月"
+		},
+		"date": {
+			"bsonType": "int",
+			"title": "日"
+		},
+		"hour": {
+			"bsonType": "int",
+			"title": "时"
+		},
+		"_createTime": {
+			"bsonType": "timestamp",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"_updateTime": {
+			"bsonType": "timestamp",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

@@ -1,0 +1,152 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["pet_id", "pet", "shop_id", "shop_title", "project_single_name", "project_single_id",  "appointment_project_id", "appointment_project_title", "phone", "pay_pirce", "pay_type", "status", "year", "month",
+		"date", "hour"
+	],
+	"permission": {
+		"read": "doc.user_id == auth.uid",
+		"create": true,
+		"update": "doc.user_id == auth.uid",
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"user_id": {
+			"bsonType": "string",
+			"description": "用户ID",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
+		},
+		"appointment_project_id": {
+			"bsonType": "string",
+			"foreignKey": "appointment-project._id",
+			"enum": {
+				"collection": "appointment-project",
+				"field": "_id as value, title as text"
+			},
+			"title": "关联的预约项目",
+			"description": "关联的预约项目"
+		},
+		"appointment_project_title": {
+			"bsonType": "string",
+			"title": "项目名称",
+			"trim": "both",
+			"description": "原始的项目名称"
+		},
+		"shop_id": {
+			"bsonType": "string",
+			"foreignKey": "shops._id",
+			"enum": {
+				"collection": "shops",
+				"field": "_id as value, title as text"
+			},
+			"title": "门店",
+			"description": "门店"
+		},
+		"shop_title": {
+			"bsonType": "string",
+			"title": "门店",
+			"trim": "both",
+			"description": "原始的门店名称"
+		},
+		"pet_id":{
+			"bsonType": "string",
+			"trim": "both",
+			"foreignKey": "pets._id",
+			"enum": {
+				"collection": "pets",
+				"field": "_id as value, nickname as text"
+			}
+		},
+		"pet": {
+			"bsonType": "object",
+			"trim": "both",
+			"title": "宠物信息",
+			"description": "原始的宠物信息,不关联是防止用户修改或者删除找不到信息"
+		},
+		"project_single_id": {
+			"title": "关联的增值服务",
+			"bsonType": "array",
+			"foreignKey": "appointment-project-single._id",
+			"enum": {
+				"collection": "appointment-project-single",
+				"field": "_id as value, title as text"
+			}
+		},
+		"project_single_name": {
+			"title": "增值服务名称",
+			"bsonType": "array",
+			"arrayType": "string",
+			"trim": "both",
+			"description": "原始的服务名称"
+		},
+		"phone": {
+			"bsonType": "string",
+			"trim": "both",
+			"title": "联系方式",
+			"pattern": "^\\+?[0-9-]{3,20}$",
+			"description": "原始的号码"
+		},
+		"pay_pirce": {
+			"bsonType": "int",
+			"title": "已支付金额"
+		},
+		"pay_type": {
+			"bsonType": "string",
+			"title": "下单渠道",
+			"enum": [{
+				"value": "alipay",
+				"text": "支付宝支付"
+			}, {
+				"value": "wxpay",
+				"text": "微信支付"
+			}, {
+				"value": "notpay",
+				"text": "未支付"
+			},{
+				"value": "meituan",
+				"text": "美团"
+			}],
+			"defaultValue": "notpay"
+		},
+		"status": {
+			"bsonType": "string",
+			"title": "服务状态",
+			"enum": ["预约中", "服务完成"],
+			"defaultValue": "预约中"
+		},
+		"year": {
+			"bsonType": "int",
+			"title": "年"
+		},
+		"month": {
+			"bsonType": "int",
+			"title": "月"
+		},
+		"date": {
+			"bsonType": "int",
+			"title": "日"
+		},
+		"hour": {
+			"bsonType": "int",
+			"title": "时"
+		},
+		"_createTime": {
+			"bsonType": "timestamp",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"_updateTime": {
+			"bsonType": "timestamp",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}
