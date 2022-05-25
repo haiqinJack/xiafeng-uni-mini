@@ -1,7 +1,0 @@
-{
-  "name": "createAppointment",
-  "dependencies": {},
-  "extensions": {
-    "uni-cloud-jql": {}
-  }
-}

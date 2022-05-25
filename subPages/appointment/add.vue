@@ -169,6 +169,7 @@ export default {
 			shop_id: '',
 			shop_title: '',
 			pet_id: '',
+			pet_type: '',
 			pet: {},
 			project_single_id: [],
 			project_single_name: [],
@@ -220,6 +221,7 @@ export default {
 		},
 		setFormDataPet(pet) {
 			this.formData.pet_id = pet._id;
+			this.formData.pet_type = pet.pet_type
 			this.formData.phone = pet.phone;
 			this.formData.pet = pet
 		},
