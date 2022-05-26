@@ -104,6 +104,10 @@
 				</view>
 			</view>
 		</view>
+		
+		<uni-popup ref="popup" type="message">
+			<uni-popup-message :type="popup" :message="message" :duration="2000"></uni-popup-message>
+		</uni-popup>
 	</view>
 </template>
 
@@ -152,6 +156,7 @@ export default {
 			});
 			return arr;
 		},
+
 		totalFee() {
 			let fee = this.formOptions.project_price
 			this.formOptions.project_single.forEach(item => {
@@ -165,15 +170,11 @@ export default {
 	data() {
 		let formData = {
 			appointment_project_id: '',
-			appointment_project_title: '',
 			shop_id: '',
-			shop_title: '',
-			pet_id: '',
-			pet_type: '',
 			pet: {},
 			project_single_id: [],
-			project_single_name: [],
-			phone: '',
+			mobile: '',
+			order_price: '',
 			pay_pirce: '',
 			pay_type: '',
 			year: -1,
@@ -187,6 +188,8 @@ export default {
 			hours: [],
 			hoursIndex: -1,
 			choosePetIndex: -1,
+			popup: 'error',
+			message: '',
 			formOptions: {
 				project_price: 0,
 				project_single: [],
@@ -205,11 +208,9 @@ export default {
 			let month = now.getMonth();
 			let date = now.getDate();
 			this.formData.appointment_project_id = project._id;
-			this.formData.appointment_project_title = project.title;
 			this.formOptions.project_price = project.price
 			this.setFormDataDate(year, month, date)
 			this.formData.shop_id = this.shop._id;
-			this.formData.shop_title = this.shop.title;
 		},
 		setFormDataDate(year, month, date) {
 			this.formData.year = year
@@ -220,22 +221,17 @@ export default {
 			this.formOptions.time = ''
 		},
 		setFormDataPet(pet) {
-			this.formData.pet_id = pet._id;
-			this.formData.pet_type = pet.pet_type
-			this.formData.phone = pet.phone;
 			this.formData.pet = pet
+			this.formData.mobile = pet.phone
 		},
 		setFormDataProjectSingle() {
 			let arr = []
-			let arr2 = []
 			this.formOptions.project_single.forEach(item => {
 				if(item.choose) {
 					arr.push(item._id)
-					arr2.push(item.title)
 				}	
 			})
 			this.formData.project_single_id = arr
-			this.formData.project_single_name = arr2
 		},
 		onChooseSignle(item, index) {
 			item.choose = !item.choose;
@@ -286,32 +282,47 @@ export default {
 		},
 		meituan() {
 			this.setFormDataProjectSingle()
-			let val = this.val()
-			if(val) {
+			let validate = this.validate()
+			if(validate) {
 				uni.showLoading({
 					mask: true
 				});
-				this.formData.pay_pirce = this.totalFee,
+				this.formData.order_price = this.totalFee // 目前订单金额跟付款金额一致。因为没有优惠减免
+				this.formData.pay_pirce = 0 //美团按钮的支付金额为：0
 				this.formData.pay_type = 'meituan'
-				uniCloud.callFunction({
-					name: 'createAppointment',
-					data: this.formData
-				}).then(({result}) => {
-					console.log(result,' res----')
-					uni.redirectTo({
-						url: '/subPages/appointment/user'
+				this.formData.status = "预约中"
+				this.formData.pay_status = "未支付"
+				uniCloud.database().collection('appointment-user').add(this.formData).then(res => {					
+					if(res.code){
+						uni.showToast({
+							title: '网络繁忙。',
+							icon: "error"
+						})
+						return
+					}
+					uni.showToast({
+						title: '预约成功。',
+						icon:'none',
+						complete() {
+							setTimeout(() => {
+								uni.redirectTo({
+									url: '/subPages/appointment/user'
+								})
+							}, 1000)
+						}
 					})
+				}).catch(err => {
+					this.message = '系统出现错误，请稍后再试！'
+					this.$refs.popup.open()
 				}).finally(() => {
 					uni.hideLoading();
-				});
+				})
 			}	
 		},
-		val() {
-			let { hour, pet_id } = this.formData;
+		validate() {
+			let { hour, pet } = this.formData;
 			let flag = true
-			console.log(hour, pet_id)
 			if(hour <= -1) {
-				console.log('ssss')
 				uni.showToast({
 					icon: 'none',
 					title: '请选择时间'
@@ -319,8 +330,7 @@ export default {
 				flag = false
 				return 
 			}
-			if(pet_id.trim() == '') {
-				console.log('ssss')
+			if(pet._id.trim() == '') {
 				uni.showToast({
 					icon: 'none',
 					title: '请选择宠物'

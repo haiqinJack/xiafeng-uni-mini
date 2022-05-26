@@ -23,14 +23,14 @@
 							<uni-icons type="right" class="cell-right-icon"></uni-icons>
 						</view>
 					</navigator>
-					<navigator url="">
+					<navigator url="/subPages/appointment/user">
 						<view class="cell">
 							<uni-icons custom-prefix="iconfont" type="diy-ontimeshipment" class="cell-left-icon"></uni-icons>
 							<text class="cell-title">我的预约</text>
 							<uni-icons type="right" class="cell-right-icon"></uni-icons>
 						</view>						
 					</navigator>
-					<navigator url="">
+					<navigator url="/subPages/appointment/user">
 						<view class="cell">
 							<uni-icons custom-prefix="iconfont" type="diy-searchcart" class="cell-left-icon"></uni-icons>
 							<text class="cell-title">我的订单</text>
