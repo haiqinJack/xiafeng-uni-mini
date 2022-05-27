@@ -1,6 +1,10 @@
 <template>
   <view class="container">
-    <unicloud-db ref="udb" v-slot:default="{data, loading, error, options}" :options="options" collection="pets,pet-group,pet-type,vaccines" field="avatarUrl,nickname,phone,pet_group{title as text},pet_type{title as text},vaccines{title as text},pet_sex,pet_weight,isSterilization,birthday" :where="queryWhere" :getone="true" :manual="true">
+    <unicloud-db ref="udb" v-slot:default="{data, loading, error, options}" :options="options" 
+	collection="pets,pet-group,pet-type,vaccines" 
+	field="avatarUrl,nickname,phone,pet_group{title as text},pet_type{title as text},vaccines{title as text},pet_sex,pet_weight,isSterilization,birthday" 
+	:where="queryWhere" 
+	:getone="true" :manual="true">
       <view v-if="error">{{error.message}}</view>
       <view v-else-if="loading">
         <uni-load-more :contentText="loadMore" status="loading"></uni-load-more>

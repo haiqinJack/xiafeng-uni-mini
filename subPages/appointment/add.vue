@@ -3,7 +3,7 @@
 		<diy-calendar :restWeek="shop.restWeek" @change="changeCalender"></diy-calendar>
 		<template v-if="hours.length > 0">
 			<view class="times">
-				<view v-for="(item, index) in formarHours" :key="index" class="time" :class="[hoursIndex == index ? 'timeActive' : '']" @click="chooseHours(index)">
+				<view v-for="(item, index) in hours" :key="index" class="time" :class="[hoursIndex == index ? 'timeActive' : '']" @click="chooseHours(index)">
 					<view v-if="item.info">
 						<view class="hour">{{ item.hour + ':00' }}</view>
 						<view class="info">{{ item.info }}</view>
@@ -12,7 +12,8 @@
 				</view>
 			</view>
 		</template>
-		<view class="nullTime" v-else>暂无可预约时间段</view>
+		<view class="nullTime" v-else>暂无可预约时间段,请选择其他时间。</view>
+		
 		<view style="box-sizing: border-box; width: 750rpx; padding: 0 10rpx; overflow: hidden;">
 			<text style="padding-left: 20rpx;font-weight: 600 ;">选择服务宠物</text>
 			<scroll-view scroll-x enable-flex style="height:260rpx; 750rpx;display: flex;">
@@ -51,38 +52,42 @@
 				</view>
 			</scroll-view>
 		</view>
+		
 		<view style="box-sizing: border-box; width: 750rpx; padding: 0 10rpx; overflow: hidden;">
-			<text style="padding-left: 20rpx;font-weight: 600 ;">
-				增值服务
-				<text style="font-size: 12px;color: rgb(150,150,150);">(可多选)</text>
-			</text>
-			<view class="row" style="margin-top: 20rpx;">
-				<view class="col" v-for="(item, index) in formOptions.project_single" :key="index">
-					<template v-if="item.choose">
-						<view @click="onChooseSignle(item, index)" style="border: 1px solid #e62c2c;" class="position-relative">
-							<image src="../../static/cat.png" mode="widthFix" style="width: 100%;"></image>
-							<uni-icons type="checkbox-filled" class="single-icon" size="22" color="#e62c2c"></uni-icons>
-							<view class="" style="width: 100%;text-align: center;overflow: hidden;">{{ item.title }}</view>
-							<view style="width: 100%;text-align: center;">￥{{ parseFloat(item.price / 100).toFixed(2) }}元</view>
-						</view>
-					</template>
-					<template v-else>
-						<view @click="onChooseSignle(item, index)" style="border: 1px solid #ccc;">
-							<image src="../../static/cat.png" mode="widthFix" style="width: 100%;"></image>
-							<view class="" style="width: 100%;text-align: center;overflow: hidden;">{{ item.title }}</view>
-							<view style="width: 100%;text-align: center;">￥{{ parseFloat(item.price / 100).toFixed(2) }}元</view>
-						</view>
-					</template>
+			<template v-if="formOptions.project_single.length > 0">	
+				<text style="padding-left: 20rpx;font-weight: 600 ;">
+					增值服务
+					<text style="font-size: 12px;color: rgb(150,150,150);">(可多选)</text>
+				</text>
+				<view class="row" style="margin-top: 20rpx;">
+					<view class="col" v-for="(item, index) in formOptions.project_single" :key="index">
+						<template v-if="item.choose">
+							<view @click="onChooseSignle(item, index)" style="border: 1px solid #e62c2c;" class="position-relative">
+								<image :src="item.bannerfile ? item.bannerfile.url : '/static/logo.jpeg' " mode="widthFix" style="width: 100%;"></image>
+								<uni-icons type="checkbox-filled" class="single-icon" size="22" color="#e62c2c"></uni-icons>
+								<view class="" style="width: 100%;text-align: center;overflow: hidden;">{{ item.title }}</view>
+								<view style="width: 100%;text-align: center;">￥{{ parseFloat(item.price / 100).toFixed(2) }}元</view>
+							</view>
+						</template>
+						<template v-else>
+							<view @click="onChooseSignle(item, index)" style="border: 1px solid #ccc;">
+								<image :src="item.bannerfile ? item.bannerfile.url : '/static/logo.jpeg' " mode="widthFix" style="width: 100%;"></image>
+								<view class="" style="width: 100%;text-align: center;overflow: hidden;">{{ item.title }}</view>
+								<view style="width: 100%;text-align: center;">￥{{ parseFloat(item.price / 100).toFixed(2) }}元</view>
+							</view>
+						</template>
+					</view>
 				</view>
-			</view>
+			</template>
 		</view>
+		
 		<view style="box-sizing: border-box; width: 750rpx; padding: 0 10rpx; overflow: hidden;">
 			<view class="shop_item" style="font-weight: 600 ;">
 				<text style="padding-left: 24rpx;">预约信息</text>	
 			</view>
 			<view class="shop_item">
 				<text style="padding-left: 24rpx;">预约地点 </text> 
-				<text style="padding-left: 30rpx;">夏天的风宠物生活馆（翰林华府店）</text>
+				<text style="padding-left: 30rpx;">{{ formOptions.shop_title }}</text>
 			</view>
 			<view class="shop_item">
 				<text style="padding-left: 24rpx;">预约时间 </text> 
@@ -90,7 +95,7 @@
 			</view>
 			<view class="shop_item">
 				<text style="padding-left: 24rpx;">预约项目 </text> 
-				<text style="padding-left: 30rpx;">{{formData.appointment_project_title}}</text>
+				<text style="padding-left: 30rpx;">{{ formOptions.appointment_project_title }}</text>
 			</view>
 		</view>
 		<view style="color: red; font-size: 8px; margin-left: 20rpx ;padding-bottom: 60px;">*具体费用以实际体重及项目为准。</view>
@@ -115,13 +120,16 @@
 import { useShopStore } from '@/stores/shop.js';
 import { mapState } from 'pinia';
 import diyCalendar from '@/components/diy-calendar.vue';
+
+const db = uniCloud.database()
+
 export default {
 	components: {
 		diyCalendar
 	},
 	onLoad() {
-		let project = uni.getStorageSync('appointment');
-		console.log(project, 'project')
+		let project = uni.getStorageSync('appointment-project');
+		this.projectSingleWhere = `project_id in ['${project._id}']`
 		this.hours = project.hours;
 		this._init()
 	},
@@ -132,30 +140,16 @@ export default {
 	},
 	onReady() {
 		this.$refs.petsdb.loadData();
-		let arr = [];
-		for (let i = 0; i < 6; i++) {
-			arr.push({
-				_id: i,
-				title: 'adaddddasdsadsadasdd' + i,
-				price: 200 + i,
-				choose: false
-			});
-		}
-		this.formOptions.project_single = arr;
+		console.log(this.projectSingleWhere, 'this.projectSingleWhere')
+		db.collection('appointment-project-single').where(this.projectSingleWhere).get()
+		.then(({result}) => {
+			let { data } = result
+			this.formOptions.project_single = data
+		})
+		
 	},
 	computed: {
 		...mapState(useShopStore, ['shop']),
-		formarHours() {
-			//初始化格式前台看的清楚
-			let arr = [];
-			this.hours.forEach(item => {
-				arr.push({
-					hour: item,
-					info: ''
-				});
-			});
-			return arr;
-		},
 
 		totalFee() {
 			let fee = this.formOptions.project_price
@@ -183,6 +177,8 @@ export default {
 			hour: -1
 		}
 		return {
+			singleDB: [],
+			projectSingleWhere: '',
 			formData,
 			where: '',
 			hours: [],
@@ -191,6 +187,8 @@ export default {
 			popup: 'error',
 			message: '',
 			formOptions: {
+				shop_title: '',
+				appointment_project_title: '',
 				project_price: 0,
 				project_single: [],
 				time: ''
@@ -202,20 +200,25 @@ export default {
 			this.setFormData()
 		},
 		setFormData() {
-			let project = uni.getStorageSync('appointment');			
+			let project = uni.getStorageSync('appointment-project');
 			let now = new Date();
 			let year = now.getFullYear();
 			let month = now.getMonth();
 			let date = now.getDate();
+			
+			
 			this.formData.appointment_project_id = project._id;
+			this.formOptions.appointment_project_title = project.title
 			this.formOptions.project_price = project.price
 			this.setFormDataDate(year, month, date)
 			this.formData.shop_id = this.shop._id;
+			this.formOptions.shop_title = this.shop.title
 		},
 		setFormDataDate(year, month, date) {
 			this.formData.year = year
 			this.formData.month = month
 			this.formData.date = date
+			this.getAppointment(year, month, date)
 			this.formData.hour = -1
 			this.hoursIndex = -1
 			this.formOptions.time = ''
@@ -238,46 +241,178 @@ export default {
 		},
 		onChoosePet(item, index) {
 			this.choosePetIndex = index;
-			console.log(item, 'item');
 			this.setFormDataPet(item)
 		},
 		changeCalender(e) {
+			uni.showLoading({
+				mask:true
+			})
 			let { year, month, date } = e
 			this.setFormDataDate(year, month, date)
+			this.getAppointment(year, month, date)
+		},
+		getAppointment(year, month, date) {
+			db.collection('appointment').where({
+				year, month, date
+			}).get().then(({ result }) => {
+				this.hours = this.diffHours(year, month, date, result.data)
+			}).finally(() => {
+				uni.hideLoading()
+			})
+		},
+		diffHours(year, month, date, infoHours = []) {
+			let arr = [];
+			let hours = this.filterHours(year, month, date);
+			hours.forEach((item) => {
+				for (let i = 0; i < infoHours.length; i++) {
+					if (item.hour == infoHours[i].hour) {
+						item.info = `已预约${infoHours[i].appointment_user_id.length}人`;
+					}
+				}
+				arr.push(item);
+			});
+			return hours;
+		},
+		/**
+		 * 传入年月日，对比现在的时间。筛选出可以使用的时间段
+		 * @param {number} year 点击日期传入的年
+		 * @param {number} month 点击日期传入的月
+		 * @param {number} date 点击日期传入的日
+		 * @return  可以选择的时间段
+		 */
+		filterHours(year, month, date) {
+			let now = new Date();
+			let nowYear = now.getFullYear(); //当前时间，年，
+			let nowMonth = now.getMonth(); //当前月
+			let nowDate = now.getDate(); //当前时间, 1号
+			let nowHrs = now.getHours(); //当前时间，小时
+	
+			let { hours } = uni.getStorageSync('appointment-project');
+			let Hours = this.formatterHours(hours);
+			//如果今天的日期小于等于选择的日期，则晒选可以选择的时间段
+			if (nowYear >= year && nowMonth >= month && nowDate >= date) {
+				//筛选出可用的时间段
+				Hours = Hours.filter((item) => {
+					//筛选出现在的时间.小时，小于列表的时间.小时
+					if (nowHrs < item.hour) {
+						return Hours;
+					}
+				});
+				return Hours;
+			} else {
+				return Hours;
+			}
+		},
+		formatterHours(arr) {
+			let hours = [];
+			arr.forEach((item) => {
+				hours.push({
+					hour: item,
+					info: "",
+				});
+			});
+			return hours;
 		},
 		chooseHours(index) {
 			if (this.hoursIndex == index) return;
 			this.hoursIndex = index;
-			this.formData.hour = parseInt(this.formarHours[index].hour)
+			this.formData.hour = parseInt(this.hours[index].hour)
 			let { year, month, date, hour } = this.formData
 			this.formOptions.time = `${year}-${month + 1}-${date} ${hour}:00`
-			console.log(this.formarHours[index], 'chooseHours')
 		},
 		toPet() {
 			uni.navigateTo({
 				url: '/subPages/pets/list'
 			});
 		},
-		onSubmit() {
+		async onSubmit() {
 			this.setFormDataProjectSingle()
-			let val = this.val()
-			if(val) {
+			let validate = this.validate()
+			if(validate) {
 				uni.showLoading({
 					mask: true
 				});
-				this.formData.pay_pirce = this.totalFee,
-				this.formData.pay_type = 'meituan'
-				uniCloud.callFunction({
-					name: 'uni-app-pay',
-					data: {
-						action : 'wxpayJSAPI'
-					}
-				}).then(({result}) => {
-					console.log(result,' res----')
+				let totalFee = this.totalFee
+				this.formData.pay_pirce = totalFee,
+				this.formData.pay_type = 'wxpay'
+				try{
+					const payment = await uniCloud.callFunction({
+						name: 'uni-app-pay',
+						data: {
+							action : 'wxpayJSAPI',
+							params: {
+								totalFee
+							}
+						}
+					})
 					
-				}).finally(() => {
+					let { nonceStr,  timeStamp, signType, paySign, timestamp, outTradeNo} = payment.result
+					const pay = await uni.requestPayment({
+						provider: 'wxpay',
+						package: payment.result.package,
+						nonceStr, timeStamp, signType, paySign, timestamp,
+						orderInfo: outTradeNo
+					})
+					
+					if(pay.errMsg === 'requestPayment:ok') {
+						this.formData.order_price = this.totalFee // 目前订单金额跟付款金额一致。因为没有优惠减免
+						this.formData.pay_pirce = this.totalFee //支付金额
+						this.formData.pay_type = 'wxpay'
+						this.formData.status = "预约中"
+						this.formData.pay_status = "已支付"
+						let formData = this.formData
+						uniCloud.database().collection('appointment-user').add(formData).then(({result}) => {
+							console.log(result.code, 'add user')
+							if(result.code){
+								uni.showToast({
+									title: '网络繁忙。',
+									icon: "error"
+								})
+								return
+							}
+							
+							uniCloud.callFunction({
+								name: 'createAppointment',
+								data: {
+									year: formData.year,
+									month: formData.month,
+									date: formData.date,
+									hour: formData.hour,
+									appointment_user_id: result.id
+								}
+							})
+							
+							uni.showToast({
+								title: '预约成功。',
+								icon:'none',
+								complete() {
+									setTimeout(() => {
+										uni.redirectTo({
+											url: '/subPages/appointment/user'
+										})
+									}, 1000)
+								}
+							})
+						}).catch(err => {
+							console.log(err, 'err')
+							this.message = '系统出现错误，请稍后再试！'
+							this.$refs.popup.open()
+						}).finally(() => {
+							uni.hideLoading();
+						})
+					}
+					
+				}catch(err){
+					if(err.errMsg !== 'requestPayment:fail cancel') {
+						uni.showToast({
+							title: '系统出错。',
+							icon: 'error'
+						})
+					}
+				}finally {
 					uni.hideLoading();
-				});
+				}
+				
 			}	
 		},
 		meituan() {
@@ -292,14 +427,28 @@ export default {
 				this.formData.pay_type = 'meituan'
 				this.formData.status = "预约中"
 				this.formData.pay_status = "未支付"
-				uniCloud.database().collection('appointment-user').add(this.formData).then(res => {					
-					if(res.code){
+				let formData = this.formData
+				uniCloud.database().collection('appointment-user').add(formData).then(({result}) => {	
+					console.log(result.code, 'add user')
+					if(result.code){
 						uni.showToast({
 							title: '网络繁忙。',
 							icon: "error"
 						})
 						return
 					}
+					
+					uniCloud.callFunction({
+						name: 'createAppointment',
+						data: {
+							year: formData.year,
+							month: formData.month,
+							date: formData.date,
+							hour: formData.hour,
+							appointment_user_id: result.id
+						}
+					})
+					
 					uni.showToast({
 						title: '预约成功。',
 						icon:'none',
@@ -392,8 +541,7 @@ export default {
 .nullTime {
 	display: flex;
 	width: 750rpx;
-	margin: 0 auto;
-	margin-top: 20rpx;
+	margin: 20rpx auto;
 	text-align: center;
 	font-size: 14px;
 	color: rgb(190, 190, 190);

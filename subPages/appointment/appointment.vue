@@ -26,7 +26,7 @@
 							<view class="card_footer">
 								<view class="card_price_box">
 									<view class="card_price">
-										￥{{ parseInt((item.price * 100 / 10000).toFixed(0)) }}
+										￥{{ parseFloat((item.price * 100 / 10000 ).toFixed(2)) }}
 									</view>
 								</view>
 								<button  
@@ -76,7 +76,7 @@
 		},
 		methods: {
 			onAppointment(item) {
-				uni.setStorageSync('appointment', item)
+				uni.setStorageSync('appointment-project', item)
 				uni.navigateTo({
 					url: `/subPages/appointment/add`
 				})

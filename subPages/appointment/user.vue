@@ -1,6 +1,7 @@
 <template>
 	<view class="bg-light" style="padding: 10rpx 0;">
 		<unicloud-db v-slot:default="{data, pagination, loading, hasMore, error}" :collection="collectionList" 
+			orderby="_createTime desc"
 			field="appointment_project_id{bannerfile, title},shop_id{title, desc, latitude, longitude}, project_single_id{title},status, year,month,date,hour">
 			<view v-if="error">{{error.message}}</view>
 			<view v-else>
@@ -21,10 +22,10 @@
 						<view class="d-flex" style="padding: 10rpx 10rpx;">
 							<image style="width: 160rpx;height: 160rpx;" mode="scaleToFill" :src="item.appointment_project_id[0].bannerfile.url" />
 							<view style="padding-left: 16rpx;">
-								<view style="line-height: 32rpx;">{{ item.appointment_project_id[0].title }}</view>
+								<view style="line-height: 32rpx;margin-bottom: 20rpx;">{{ item.appointment_project_id[0].title }}</view>
 							   
-								<uni-tag v-for="(tag, t) in item.project_single_id || []" :text="tag.title" :key="t" circle ></uni-tag>
-								<view class="text-muted" style="font-size: small;margin-top: 10rpx;">预约时间：{{ item.year }}-{{item.month +1 }}-{{item.date}} {{item.hour}}:00</view>
+								<uni-tag v-for="(tag, t) in item.project_single_id || []" type="success" :text="tag.title" :key="t" circle ></uni-tag>
+								<view class="text-muted" style="font-size: small;padding-top: 20rpx;">预约时间：{{ item.year }}-{{item.month +1 }}-{{item.date}} {{item.hour}}:00</view>
 							</view>
 						</view>
 					</view>
