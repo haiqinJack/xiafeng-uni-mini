@@ -43,6 +43,7 @@
 			</uni-forms-item>
 			<uni-forms-item name="birthday" label="出生年月"><uni-datetime-picker return-type="date" v-model="formData.birthday"></uni-datetime-picker></uni-forms-item>
 			<view class="uni-button-group"><button type="primary" class="uni-button" @click="submit">提交</button></view>
+			<view class="uni-button-group" style="margin-top: 20px;color: #a9a9a9;" @click="remove">删除</view>
 		</uni-forms>
 	</view>
 </template>
@@ -225,7 +226,17 @@ export default {
 					});
 				});
 		},
-
+		remove() {
+			uni.showLoading({
+				mask: true
+			});
+			db.collection(dbCollectionName).doc(this.formDataId).remove()
+			.then(res => {
+				uni.navigateBack()
+			}).finally(() => {
+				uni.hideLoading();
+			});
+		},
 		/**
 		 * 获取表单数据
 		 * @param {Object} id
