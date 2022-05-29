@@ -8,6 +8,16 @@ $diy-bg-white:#fff;
     text-align: center !important;
 }
 
+.multi-ellipsis--l3 {
+	overflow: hidden;
+	word-wrap: break-word;
+	word-break: break-all;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
 .d-flex {
     display: flex;
 }

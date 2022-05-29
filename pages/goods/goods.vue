@@ -1,146 +1,155 @@
 <template>
 	<view>
-		<view class="container">
-			<scroll-view class="nav_left" scroll-y>
-				<view 
-					v-for="{{ list }}"
-					:key="index"
-					class="nav_left_items {{ curNav == item._id ? 'active' : ''}}"
-					bindtap="switchRightTab"
-					data-id="{{ item._id }}"
-				>
-					{{ item.label }}
-				</view>
-			</scroll-view>
-			<!-- 商品卡片 -->
-			<scroll-view 
-				scroll-y
-				class="nav_right"
-				scroll-into-view="{{ curNav }}"
-			>
-				<view v-for="{{ list }}" :key="index">
-					<text id="{{ item._id }}">{{ item.label }}</text>
-					<block v-for="{{ item.goods }}" :key="idx">
-					
-						<view class="card d-flex" >
-							<view class="card_left">
-								<van-image
-									fit="cover" 
-									src="{{ goods.banners[0] }}"
-								/>
-							</view>
-							<view class="card_right">
-								<view class="card_right_title ">
-									{{ goods.title }}
-								</view>
-								<view v-if="{{ true }}" class="text-muted card_right_desc  van-multi-ellipsis--l3">
-									{{ goods.description }}
-								</view>
-								<view class="card_right_foot d-flex justify-content-between align-items-center">
-									<view 
-										class="price_box" 
-									>
-										¥
-										<view style="display: inline;font-size: 1.5rem;">
-											{{ goods.price }}
-										</view>
-									</view>
-									<!-- <view class="card_right_foot_button">
-										选规格
-									</view> -->
-									<!-- <view class="card_right_foot_button">
-										<van-icon name="shopping-cart-o" color="#fff" size="25rpx"/>
-									</view> -->
-									<view class="card_right_foot_buttonBox">
-											<!-- minus 按钮 -->
-											<view 
-												hidden="{{ !goods.num }}"
-												class="rounded-circle card_right_foot_buttonBox_icon">
-												<van-icon 
-													name="minus"  
-													size="30rpx"
-													color="#fff"
-													custom-style="font-weight: 700;"
-													data-item="{{ goods }}"
-													bindtap="minus"
-												/>
-											</view>
-											<!-- 数量 -->
-											<view 
-												hidden="{{ !goods.num }}"
-												class="card_right_foot_num"
-											>
-												{{ goods.num }}
-											</view>
-											<!-- plus 按钮 -->
-										<view class="rounded-circle card_right_foot_buttonBox_icon"
-										data-item="{{ goods }}"
-										capture-catch:tap="plus"
-										>
-											<van-icon 
-												name="plus"  
-												size="30rpx"
-												color="#fff"
-												custom-style="font-weight: 700;"
-												data-item="{{ goods }}"
-												capture-catch:tap="plus"
-											/>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</block>
-				</view>
-				
-				<view class="last_item">
-					没有更多了
-				</view>
-			</scroll-view>
-			<!-- 购物车 -->
+		<!-- 分类 -->
+		<scroll-view class="nav_left" scroll-y>
 			<view 
-				class="cart rounded-pill d-flex" 
-				hidden="{{ cart.length < 1 ? true : false}}"
+				v-for="(item, index) in list"
+				:key="index"
+				class="nav_left_items"
+				:class="curNav == item._id._value ? 'active' : ''"
+				@click="switchRightTab(item._id)"
+				v-show="item._id['opendb-mall-goods'].length > 0"
 			>
-				<view class="cart_icon" bindtap="showPopup">
-					<van-icon 
-						name="shopping-cart-o" 
-						color="#1989fa" 
-						size="40px"
-						info="{{ totalCart }}"
-					/>
-				</view>
-				<view class="cart_price_box">
-					<view>
-						¥
-						<view style="display: inline;font-size: 1.5rem;">
-							{{ totalPrice }}
+				{{ item.name }}
+			</view>
+		</scroll-view>
+		<!-- 分类end -->
+		<!-- 右则商品区 -->
+		<scroll-view 
+			scroll-y
+			class="nav_right"
+			:scroll-into-view="curNav"
+		>
+			<view v-for="(item, index) in list " :key="index" v-show="item._id['opendb-mall-goods'].length > 0">
+				<text :id="item._id" style="font-size: 14px;">{{ item.name }}</text>
+				<template v-for="(goods, idx) in item._id['opendb-mall-goods']">
+					<view class="card d-flex">
+						 <view class="card_left">
+							<image
+								mode="aspectFill"
+								:src="goods.goods_thumb ? goods.goods_thumb.url : '/static/imageErr'"
+							/>
+						</view>
+						
+						<view class="card_right">
+							<view class="card_right_title ">
+								{{ goods.name }}
+							</view>
+							<view class="text-muted card_right_desc  multi-ellipsis--l3">
+								{{ goods.goods_desc }}
+							</view>
+							
+							<view class="card_right_foot d-flex justify-content-between align-items-center">
+								 <view 
+									class="price_box" 
+								>
+									¥
+									<text style="display: inline;font-size: 1.5rem;">
+										{{ goods.price }}
+									</text>
+								</view>
+							</view>
 						</view>
 					</view>
-				</view>
-				<!-- <view class="cart_button_disabled">
-					休息中
-				</view> -->
-				<view 
-					class="cart_button"
-					bindtap="confirm"
-				>
-					结算
+				</template>
+			</view>
+		</scroll-view>
+		<!--  右则商品区 end -->
+		<!-- 购物车 -->
+		<view 
+			class="cart rounded-pill d-flex"
+			v-show="cart.length > 0 ? true : false"
+		>
+			<view class="cart_icon" bindtap="showPopup">
+				<uni-icons type="cart" color="#1989fa" size="40px"></uni-icons>
+				<!-- <van-icon 
+					name="shopping-cart-o" 
+					
+					
+					info="{{ totalCart }}"
+				/> -->
+			</view>
+			<view class="cart_price_box">
+				<view>
+					¥
+					<view style="display: inline;font-size: 1.5rem;">
+						{{ totalPrice }}
+					</view>
 				</view>
 			</view>
+			<!-- <view class="cart_button_disabled">
+				休息中
+			</view> -->
+			<view 
+				class="cart_button"
+				@click="confirm"
+			>
+				结算
+			</view>
 		</view>
+		<!-- 购物车end -->
+		
+		<uni-popup ref="popup" type="message">
+			<uni-popup-message :type="popup.type" :message="popup.message" :duration="2000"></uni-popup-message>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	const db = uniCloud.database()
 	export default {
+		onLoad() {
+			this._init()
+		},
+		computed: {
+			totalPrice() {
+				return 1
+			}
+		},
 		data() {
 			return {
-				list: []
+				list: [],
+				cart:[1],
+				curNav: '',
+				popup: {
+					message: '',
+					type: 'error'
+				}
+				
+				
 			}
 		},
 		methods: {
-			
+			_init(){
+				this.apiGetCategories()
+			},
+			async apiGetCategories() {
+				try{
+					// const cate =  db.collection('opendb-mall-categories').getTemp()
+					// const { result } = await db.collection(cate,sku).get()
+					
+					const goods = db.collection('opendb-mall-goods').field('_id, category_id,goods_sn, name, goods_desc, goods_thumb, remain_count').getTemp()
+					const cate = await db.collection(	'opendb-mall-categories').get({
+      getOne:true
+    })
+					// const result = await db.collection(goods,'opendb-mall-sku', 'opendb-mall-categories')
+					// .groupBy('name')
+					// .groupField('mergeObjects("$$category_id") as cate')
+					// .get()
+					// let { data } = result
+					
+					console.log(cate, 'cate')
+					// this.list = data
+					// this.curNav = data[0]._id._value
+				}catch(err) {
+					console.error(err)
+					this.popup.message = '系统出现错误，请稍后再试！'
+					this.$refs.popup.open()
+				}finally{
+					
+				}
+				
+			}
 		}
 	}
 </script>
@@ -155,6 +164,7 @@
 }
 
 .nav_left {
+	border: 1px solid red;
 	position: absolute;
 	top: 0;
 	left: 0;
