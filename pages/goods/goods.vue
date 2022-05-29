@@ -1,60 +1,70 @@
 <template>
 	<view>
-		<!-- 分类 -->
-		<scroll-view class="nav_left" scroll-y>
-			<view 
-				v-for="(item, index) in list"
-				:key="index"
-				class="nav_left_items"
-				:class="curNav == item._id._value ? 'active' : ''"
-				@click="switchRightTab(item._id)"
-				v-show="item._id['opendb-mall-goods'].length > 0"
+		<unicloud-db v-slot:default="{data, loading, error, options}" field="_id, name" collection="opendb-mall-categories">
+			<!-- 分类 -->
+			<view v-if="error">{{error.message}}</view>
+			<scroll-view v-else class="nav_left" scroll-y>
+				<view 
+					v-for="(item, index) in data"
+					:key="index"
+					class="nav_left_items"
+					:class="curNav == item._id._value ? 'active' : ''"
+					@click="switchRightTab(item._id)"
+				>
+					{{ item.name }}
+				</view>
+			</scroll-view>
+			<!-- 分类end -->
+			<unicloud-db v-slot:default="{loading, data, error, options}" :options="data" collection="opendb-mall-goods, opendb-mall-sku">
+				<view v-if="error">{{error.message}}</view>
+				
+			
+			<!-- 右则商品区 -->
+			<scroll-view 
+				v-else
+				scroll-y
+				class="nav_right"
+				:scroll-into-view="curNav"
 			>
-				{{ item.name }}
-			</view>
-		</scroll-view>
-		<!-- 分类end -->
-		<!-- 右则商品区 -->
-		<scroll-view 
-			scroll-y
-			class="nav_right"
-			:scroll-into-view="curNav"
-		>
-			<view v-for="(item, index) in list " :key="index" v-show="item._id['opendb-mall-goods'].length > 0">
-				<text :id="item._id" style="font-size: 14px;">{{ item.name }}</text>
-				<template v-for="(goods, idx) in item._id['opendb-mall-goods']">
-					<view class="card d-flex">
-						 <view class="card_left">
-							<image
-								mode="aspectFill"
-								:src="goods.goods_thumb ? goods.goods_thumb.url : '/static/imageErr'"
-							/>
-						</view>
-						
-						<view class="card_right">
-							<view class="card_right_title ">
-								{{ goods.name }}
-							</view>
-							<view class="text-muted card_right_desc  multi-ellipsis--l3">
-								{{ goods.goods_desc }}
+				{{ options }}
+				{{ data }}
+				<!-- <view v-for="(item, index) in list " :key="index" v-show="item._id['opendb-mall-goods'].length > 0">
+					<text :id="item._id" style="font-size: 14px;">{{ item.name }}</text>
+					<template v-for="(goods, idx) in item._id['opendb-mall-goods']">
+						<view class="card d-flex">
+							 <view class="card_left">
+								<image
+									mode="aspectFill"
+									:src="goods.goods_thumb ? goods.goods_thumb.url : '/static/imageErr'"
+								/>
 							</view>
 							
-							<view class="card_right_foot d-flex justify-content-between align-items-center">
-								 <view 
-									class="price_box" 
-								>
-									¥
-									<text style="display: inline;font-size: 1.5rem;">
-										{{ goods.price }}
-									</text>
+							<view class="card_right">
+								<view class="card_right_title ">
+									{{ goods.name }}
+								</view>
+								<view class="text-muted card_right_desc  multi-ellipsis--l3">
+									{{ goods.goods_desc }}
+								</view>
+								
+								<view class="card_right_foot d-flex justify-content-between align-items-center">
+									 <view 
+										class="price_box" 
+									>
+										¥
+										<text style="display: inline;font-size: 1.5rem;">
+											{{ goods.price }}
+										</text>
+									</view>
 								</view>
 							</view>
 						</view>
-					</view>
-				</template>
-			</view>
-		</scroll-view>
-		<!--  右则商品区 end -->
+					</template>
+				</view> -->
+			</scroll-view>
+			<!--  右则商品区 end -->
+			</unicloud-db>
+		</unicloud-db>
 		<!-- 购物车 -->
 		<view 
 			class="cart rounded-pill d-flex"
@@ -99,7 +109,7 @@
 	const db = uniCloud.database()
 	export default {
 		onLoad() {
-			this._init()
+			// this._init()
 		},
 		computed: {
 			totalPrice() {
@@ -109,7 +119,7 @@
 		data() {
 			return {
 				list: [],
-				cart:[1],
+				cart:[],
 				curNav: '',
 				popup: {
 					message: '',
