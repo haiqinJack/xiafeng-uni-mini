@@ -1,89 +1,97 @@
 <template>
+	<page-meta :page-style="'overflow:'+( show ? 'hidden' : 'visible')"></page-meta>
 	<view>
-		<unicloud-db v-slot:default="{data, loading, error, options}" field="_id, name" collection="opendb-mall-categories">
-			<!-- 分类 -->
-			<view v-if="error">{{error.message}}</view>
-			<scroll-view v-else class="nav_left" scroll-y>
-				<view 
-					v-for="(item, index) in data"
-					:key="index"
-					class="nav_left_items"
-					:class="curNav == item._id._value ? 'active' : ''"
-					@click="switchRightTab(item._id)"
-				>
-					{{ item.name }}
-				</view>
-			</scroll-view>
-			<!-- 分类end -->
-			<unicloud-db v-slot:default="{loading, data, error, options}" :options="data" collection="opendb-mall-goods, opendb-mall-sku">
-				<view v-if="error">{{error.message}}</view>
-				
-			
-			<!-- 右则商品区 -->
-			<scroll-view 
-				v-else
-				scroll-y
-				class="nav_right"
-				:scroll-into-view="curNav"
+		<!-- 分类 -->
+		<scroll-view class="nav_left" scroll-y>
+			<view 
+				v-for="(item, index) in list"
+				:key="index"
+				class="nav_left_items"
+				:class="curNav == 'x' + item._id._value ? 'active' : ''"
+				@click="switchRightTab(item._id._value)"
+				v-show="item._id['opendb-mall-goods'].length > 0"
 			>
-				{{ options }}
-				{{ data }}
-				<!-- <view v-for="(item, index) in list " :key="index" v-show="item._id['opendb-mall-goods'].length > 0">
-					<text :id="item._id" style="font-size: 14px;">{{ item.name }}</text>
-					<template v-for="(goods, idx) in item._id['opendb-mall-goods']">
-						<view class="card d-flex">
-							 <view class="card_left">
-								<image
-									mode="aspectFill"
-									:src="goods.goods_thumb ? goods.goods_thumb.url : '/static/imageErr'"
-								/>
+				{{ item.name }}
+			</view>
+		</scroll-view>
+		<!-- 分类end -->
+		
+		<!-- 右则商品区 -->
+		<scroll-view 
+			scroll-y
+			class="nav_right"
+			:scroll-into-view="curNav"
+		>
+			<view v-for="(item, index) in list " :key="index" v-show="item._id['opendb-mall-goods'].length > 0">
+				<text :id="'x' + item._id._value" style="font-size: 14px;">{{ item.name }}</text>
+				<template v-for="(goods, idx) in item._id['opendb-mall-goods']">
+					<view class="card d-flex">
+						 <view class="card_left">
+							<image
+								mode="aspectFill"
+								:src="goods.goods_thumb ? goods.goods_thumb.url : '/static/imageErr.png'"
+							/>
+						</view>
+						
+						<view class="card_right">
+							<view class="card_right_title ">
+								{{ goods.name }}
+							</view>
+							<view class="text-muted card_right_desc  multi-ellipsis--l3">
+								{{ goods.goods_desc }}
 							</view>
 							
-							<view class="card_right">
-								<view class="card_right_title ">
-									{{ goods.name }}
-								</view>
-								<view class="text-muted card_right_desc  multi-ellipsis--l3">
-									{{ goods.goods_desc }}
+							<view class="card_right_foot d-flex justify-content-between align-items-center">
+								 <view 
+									class="price_box" 
+								>
+									¥
+									<text style="display: inline;font-size: 48rpx;">
+										{{ parseFloat(goods.price / 100).toFixed(2) }}
+									</text>
 								</view>
 								
-								<view class="card_right_foot d-flex justify-content-between align-items-center">
-									 <view 
-										class="price_box" 
+								<!-- 按钮 plus | minus -->
+								<view class="card_right_foot_buttonBox">
+									<!-- minus 按钮 -->
+									<uni-icons v-show="goods.num" type="minus-filled" size="26" color="rgb(241, 185, 62)" @click="minus(goods)"></uni-icons>
+									<!-- 数量 -->
+									<view 
+										v-show="goods.num"
+										class="card_right_foot_num"
 									>
-										¥
-										<text style="display: inline;font-size: 1.5rem;">
-											{{ goods.price }}
-										</text>
+										{{ goods.num }}
 									</view>
+									<!-- plus 按钮 -->
+									<uni-icons type="plus-filled" size="26" color="rgb(241, 185, 62)" @click="plus(goods)" ></uni-icons>
 								</view>
+								<!--  按钮end -->
+								
 							</view>
+							
+							
 						</view>
-					</template>
-				</view> -->
-			</scroll-view>
-			<!--  右则商品区 end -->
-			</unicloud-db>
-		</unicloud-db>
+					</view>
+				</template>
+			</view>
+		</scroll-view>
+		<!--  右则商品区 end -->
+
 		<!-- 购物车 -->
 		<view 
 			class="cart rounded-pill d-flex"
 			v-show="cart.length > 0 ? true : false"
 		>
-			<view class="cart_icon" bindtap="showPopup">
-				<uni-icons type="cart" color="#1989fa" size="40px"></uni-icons>
-				<!-- <van-icon 
-					name="shopping-cart-o" 
-					
-					
-					info="{{ totalCart }}"
-				/> -->
+			<view class="cart_icon" @click="showPopup">
+				<uni-badge :text="cartNum" type="error" absolute="rightTop" :offset="[4,2]">
+					<uni-icons type="cart" color="#1989fa" size="40px"></uni-icons>
+				</uni-badge>
 			</view>
 			<view class="cart_price_box">
 				<view>
 					¥
 					<view style="display: inline;font-size: 1.5rem;">
-						{{ totalPrice }}
+						{{ parseFloat(totalPrice / 100).toFixed(2) }}
 					</view>
 				</view>
 			</view>
@@ -99,6 +107,62 @@
 		</view>
 		<!-- 购物车end -->
 		
+		<!-- 购物车popup -->
+		<uni-popup ref="cartPopup" type="bottom" @close="onClose" background-color="#fff" @change="onChangePopup"> 
+			<view class="d-flex justify-content-between align-items-center"
+				style="height: 80rpx; padding: 0 30rpx;border-bottom: 1px solid rgb(223, 221, 221); font-size: 12px;"
+			>
+				<view>已选商品</view>
+				<view @click="emptyCart">清空</view>
+			</view>
+			<view style="overflow: scroll;max-height: 300px;margin-bottom: 240rpx;">
+				<view v-for="(goods, index) in cart " :key="index" class="d-flex" style="padding-left:20rpx">
+					<view class="cart_card d-flex" >
+						<view class="cart_card_left">
+							<image
+								mode="aspectFill"
+								:src="goods.goods_thumb ? goods.goods_thumb.url : '/static/imageErr.png'"
+							/>
+						</view>
+						<view class="cart_card_right">
+							<view class="cart_card_right_title ">
+								{{ goods.name }}
+							</view>
+							<view class="text-muted cart_card_right_desc  multi-ellipsis--l3">
+								{{ goods.goods_desc }}
+							</view>
+							
+							<view class="cart_card_right_foot d-flex justify-content-between align-items-center">
+								<view class="price_box">
+									¥
+									<view style="display: inline;font-size: 24px">
+										{{ parseFloat(goods.price * goods.num / 100).toFixed(2)  }}
+									</view>
+								</view>
+								
+								<!-- 按钮 plus | minus -->
+								<view class="card_right_foot_buttonBox">
+									<!-- minus 按钮 -->
+									<uni-icons v-show="goods.num" type="minus-filled" size="26" color="rgb(241, 185, 62)" @click="minus(goods)"></uni-icons>
+									<!-- 数量 -->
+									<view 
+										v-show="goods.num"
+										class="card_right_foot_num"
+									>
+										{{ goods.num }}
+									</view>
+									<!-- plus 按钮 -->
+									<uni-icons type="plus-filled" size="26" color="rgb(241, 185, 62)" @click="plus(goods)" ></uni-icons>
+								</view>
+								<!--  按钮end -->
+								
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 购物车popup end -->
 		<uni-popup ref="popup" type="message">
 			<uni-popup-message :type="popup.type" :message="popup.message" :duration="2000"></uni-popup-message>
 		</uni-popup>
@@ -109,24 +173,31 @@
 	const db = uniCloud.database()
 	export default {
 		onLoad() {
-			// this._init()
+			this._init()
 		},
 		computed: {
 			totalPrice() {
-				return 1
+				return this.cart.reduce((total, current) => {
+					return total + current.price * current.num;
+				}, 0)
+			},
+			cartNum() {
+				return this.cart.reduce((total, current) => {
+					return total + current.num
+				}, 0)
+				
 			}
 		},
 		data() {
 			return {
 				list: [],
-				cart:[],
+				cart: [],
+				show: false,
 				curNav: '',
 				popup: {
 					message: '',
 					type: 'error'
 				}
-				
-				
 			}
 		},
 		methods: {
@@ -135,22 +206,14 @@
 			},
 			async apiGetCategories() {
 				try{
-					// const cate =  db.collection('opendb-mall-categories').getTemp()
-					// const { result } = await db.collection(cate,sku).get()
+					const category = db.collection('opendb-mall-categories').getTemp()
+					const { result } = await db.collection(category,'opendb-mall-goods').get()
 					
-					const goods = db.collection('opendb-mall-goods').field('_id, category_id,goods_sn, name, goods_desc, goods_thumb, remain_count').getTemp()
-					const cate = await db.collection(	'opendb-mall-categories').get({
-      getOne:true
-    })
-					// const result = await db.collection(goods,'opendb-mall-sku', 'opendb-mall-categories')
-					// .groupBy('name')
-					// .groupField('mergeObjects("$$category_id") as cate')
-					// .get()
-					// let { data } = result
+					let { data } = result
 					
-					console.log(cate, 'cate')
-					// this.list = data
-					// this.curNav = data[0]._id._value
+					console.log(data, 'cate')
+					this.list = data
+					this.curNav = data[0]._id._value
 				}catch(err) {
 					console.error(err)
 					this.popup.message = '系统出现错误，请稍后再试！'
@@ -159,7 +222,56 @@
 					
 				}
 				
+			},
+			switchRightTab(id) {
+				this.curNav = `x${id}`
+			},
+			confirm() {
+				
+			},
+			showPopup() {
+				if( !this.show ){
+					this.show = true
+					this.$refs.cartPopup.open()
+				}else {
+					this.onClose()
+				}
+				console.log(this.show)
+			},
+			onChangePopup(e) {
+				let { show } = e
+				this.show = show
+				console.log(e, 'onChangePopup')
+			},
+			onClose() {
+				this.$refs.cartPopup.close()
+			},
+			emptyCart(){
+				this.cart.forEach(item => {
+					item.num = 0
+				})
+				this.cart = []
+				this.onClose()
+			},
+			plus(goods) {
+				goods.num = goods.num ? ++goods.num : 1
+				
+				if(goods.num == 1) {
+					this.cart.push(goods)
+				}
+				console.log(this.cart)
+			},
+			minus(goods) {
+				goods.num = goods.num > 0 ? --goods.num : 0
+				
+				if(goods.num == 0) {
+					let index = this.cart.findIndex(item => {
+						return item._id == goods._id
+					})
+					this.cart.splice(index, 1)
+				}
 			}
+			 
 		}
 	}
 </script>
@@ -214,7 +326,7 @@
 	width: 600rpx;
 	max-width: 600rpx;
 	height: 100vh;
-	margin-bottom: 50px;
+	margin-bottom: 100rpx;
 	background: #fff;
 	padding: 20rpx;
 	box-sizing: border-box;
