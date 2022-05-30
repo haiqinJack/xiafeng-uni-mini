@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
 	}),
 	actions: {
 		async login() {
-			const { code } = await this.getProviderOauth()	
+			const { code } = await this.getProviderOauth()
 			// #ifdef MP-WEIXIN
 			uniCloud.callFunction({
 				name: 'uni-id-mp',
@@ -24,16 +24,20 @@ export const useUserStore = defineStore('user', {
 					},
 				}
 			}).then(({result}) => {
+				console.log(result, 'loginByWeixin')
 				if(result.code === 0) {//0表示成功
 					console.log('登录成功')
 					this.userInfo = result.userInfo,
 					this.sessionKey = result.sessionKey
-					this.mobile = result.userInfo.mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
+					if(result.userInfo.mobile) {
+						this.mobile = result.userInfo.mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
+					}
 					uni.setStorageSync('uni_id_token', result.token)
 					uni.setStorageSync('uni_id_token_expired', result.tokenExpired)
 				}
 			}).catch(err => {
-				console.error(err)
+				this.login()
+				console.error(err, 'login 失败')
 			})
 			// #endif
 			// #ifdef MP-ALIPAY
@@ -48,6 +52,7 @@ export const useUserStore = defineStore('user', {
 			}).then(({result}) => {
 				console.log(result, 'logRes')
 				if(result.code === 0) {//0表示成功
+					console.log('登录支付宝成功')
 					this.userInfo = result.userInfo,
 					uni.setStorageSync('uni_id_token', result.token)
 					uni.setStorageSync('uni_id_token_expired', result.tokenExpired)
@@ -56,6 +61,7 @@ export const useUserStore = defineStore('user', {
 				console.error(err)
 			})
 			// #endif
+			
 		},
 		logout(){
 			uni.removeStorageSync('uni_id_token')
@@ -91,11 +97,16 @@ export const useUserStore = defineStore('user', {
 			})
 		},
 		setUserInfo(userInfo) {
-			console.log('setUserInfo')
 			let oldUserInfo = this.userInfo
 			let newUserInfo = Object.assign(oldUserInfo, userInfo)
-			console.log(newUserInfo, 'newUserInfo-------')
 			this.userInfo = newUserInfo
+			if(userInfo.mobile) {
+				this.mobile = userInfo.mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
+			}
+		},
+		setMobile(mobile) {
+			this.userInfo.mobile = mobile
+			this.mobile = mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
 		},
 		setHasAuthLogin(has) {
 			this.login()

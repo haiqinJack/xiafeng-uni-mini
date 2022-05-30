@@ -31,6 +31,10 @@
 <script>
 const db = uniCloud.database();
 export default {
+	onLoad() {
+		const uid = uniCloud.getCurrentUserInfo()
+		console.log(uid, 'uid')
+	},
 	onShow() {
 		if (this.$refs.udb) {
 			this.$refs.udb.refresh();

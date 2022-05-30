@@ -27,7 +27,7 @@
 			}
 		},
 		methods: {
-			...mapActions(useUserStore, ['setHasAuthLogin']),
+			...mapActions(useUserStore, ['setHasAuthLogin', 'setUserInfo', 'setMobile']),
 			login(){
 				this.setHasAuthLogin(true)
 				uni.navigateBack()
@@ -44,8 +44,9 @@
 							sessionKey
 						},						
 					}
-				}).then((res) => {
-					console.log(res,'res-----')
+				}).then(({result}) => {
+					this.setMobile(result.mobile)
+					this.login()
 				})
 			},
 			// #endif			

@@ -19,6 +19,7 @@
 		<!-- 右则商品区 -->
 		<scroll-view 
 			scroll-y
+			scroll-anchoring
 			class="nav_right"
 			:scroll-into-view="curNav"
 		>

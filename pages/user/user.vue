@@ -53,12 +53,7 @@ import { mapState } from 'pinia'
 
 export default {
 	computed:{
-		...mapState(useUserStore, ['userInfo', 'token', 'tokenExpired', 'hasAuthLogin', 'mobile']),
-	},
-	data() {
-		return {
-			
-		}
+		...mapState(useUserStore, ['hasAuthLogin', 'mobile']),
 	},
 	methods: {
 		to() {
@@ -66,83 +61,6 @@ export default {
 				url: '/subPages/login/login'
 			})
 		},
-		getPhoneNumber(option){
-			console.log(...option, 'getPhoneNumber')
-		},
-		getProvider(){
-			return new Promise((resolve, reject) => {
-				uni.getProvider({
-					service: 'oauth',
-					success: (result) => {
-						console.log(result, 'getProvider')
-						resolve((result))
-					},
-					fail: (err) => {
-						reject(err)
-					}
-				})				
-			})
-		}
-	},
-	setup(){
-		const userStore = useUserStore()
-		const onGetAuthorize = function(e) {
-			console.log(e,'eee')
-		}
-		const onAuthError = function(e) {
-			console.error(e, 'errr')
-		}
-		const getPhoneNumberByWeixin = function(e) {
-			console.log(e, 'e---')
-			console.log('bindMobileByMpWeixin>>>', e)
-			uni.showLoading({
-				title: 'loading'
-			});
-			uniCloud.callFunction({
-				name: "uni-id-cf",
-				data: {
-					"action": "bindMobileByMpWeixin",
-					"params": e.detail
-				},
-				
-				success: ({
-					result
-				}) => {
-					
-					uni.showToast({
-						title: result.msg || '绑定成功',
-						icon: 'none'
-					});
-					if (result.code === 0) {
-						this.mobile = result.mobile
-					}
-				},
-				fail(err) {
-					console.log(err, 'err----')	
-				},
-				complete: () => {
-					uni.hideLoading()
-				},
-			})
-		}
-		const getUserProfile = function(e) {
-			uni.getUserProfile({
-				desc: '完善用户资料',
-				success: (result) => {
-					userStore.setUserInfo(result.userInfo)
-				},
-				fail: (err) => {
-					console.error(err, 'err----')
-				}
-			})
-		}
-		
-		return {
-			onGetAuthorize,
-			onAuthError,
-			getPhoneNumberByWeixin,
-			getUserProfile
-		}
 	}
 }
 
