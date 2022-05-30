@@ -3,16 +3,21 @@
 	<view>
 		<view class="bg-light" style="min-height: 99vh;">
 			<view class="d-flex align-items-center flex-column" style="margin-bottom: 30px; padding-top: 30px;">
-				<template v-if="hasAuthLogin">
+				
+				<template v-if="!hasAuthLogin">
 					<image class="login-image" mode="scaleToFill" src="~@/static/logo.jpeg" />
+					<!-- #ifdef MP-WEIXIN -->
 					<button class="login-button" @click="to">授权登录</button>
-					<text>{{ hasAuthLogin }}</text>
+					<!-- #endif -->
+					<!-- #ifdef MP-ALIPAY -->
+					
+					<!-- #endif -->
 				</template>
 				<template v-else>
 					<image class="login-image" mode="scaleToFill" src="~@/static/logo.jpeg" />
 					<view class="nickName">{{ mobile }}</view>
 				</template>
-				<view>{{ userInfo._id}}</view>
+				
 			</view>
 			<view class="bg-white">
 				<view class="cell-group">
@@ -30,7 +35,7 @@
 							<uni-icons type="right" class="cell-right-icon"></uni-icons>
 						</view>						
 					</navigator>
-					<navigator url="/subPages/appointment/user">
+					<navigator url="/subPages/order/order">
 						<view class="cell">
 							<uni-icons custom-prefix="iconfont" type="diy-searchcart" class="cell-left-icon"></uni-icons>
 							<text class="cell-title">我的订单</text>

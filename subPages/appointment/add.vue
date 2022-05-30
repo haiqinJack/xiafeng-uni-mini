@@ -140,7 +140,6 @@ export default {
 	},
 	onReady() {
 		this.$refs.petsdb.loadData();
-		console.log(this.projectSingleWhere, 'this.projectSingleWhere')
 		db.collection('appointment-project-single').where(this.projectSingleWhere).get()
 		.then(({result}) => {
 			let { data } = result
@@ -357,6 +356,7 @@ export default {
 					if(pay.errMsg === 'requestPayment:ok') {
 						this.formData.order_price = this.totalFee // 目前订单金额跟付款金额一致。因为没有优惠减免
 						this.formData.pay_pirce = this.totalFee //支付金额
+						this.formData.outTradeNo = outTradeNo
 						this.formData.pay_type = 'wxpay'
 						this.formData.status = "预约中"
 						this.formData.pay_status = "已支付"
@@ -394,9 +394,11 @@ export default {
 								}
 							})
 						}).catch(err => {
-							console.log(err, 'err')
-							this.message = '系统出现错误，请稍后再试！'
-							this.$refs.popup.open()
+							console.error(err, 'err')
+							if(err.errMsg !== 'requestPayment:fail cancel'){
+								this.message = '系统出现错误，请稍后再试！'
+								this.$refs.popup.open()
+							}
 						}).finally(() => {
 							uni.hideLoading();
 						})

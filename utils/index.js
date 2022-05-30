@@ -77,10 +77,10 @@ const keepTwoDecimal = function(num) {
 	let _num = Math.floor(num * 100) / 100
 }
 
-module.exports = {
-    _removeArrayByIndex,
-    _extFileType,
-    _distance,
-    timestampToTime,
+export default {
+	_removeArrayByIndex,
+	_extFileType,
+	_distance,
+	timestampToTime,
 	keepTwoDecimal
-};
+}

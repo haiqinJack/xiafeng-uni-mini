@@ -17,8 +17,11 @@ export default {
 	setup() {
 		const userStroe = useUserStore()
 		const login = function() {
-			console.log('login setup')
-			userStroe.login()
+			try{
+				userStroe.login()
+			}catch(e){
+				userStroe.login()
+			}
 		}
 		return {
 			userStroe,

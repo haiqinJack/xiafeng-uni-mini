@@ -16,7 +16,7 @@
 
 <script>
 	import { useUserStore } from '@/stores/user.js'
-	import { mapState } from 'pinia';
+	import { mapState, mapActions } from 'pinia';
 	export default {
 		computed: {
 			...mapState(useUserStore, ['userInfo', 'sessionKey', 'hasAuthLogin'])
@@ -27,8 +27,9 @@
 			}
 		},
 		methods: {
+			...mapActions(useUserStore, ['setHasAuthLogin']),
 			login(){
-				this.hasAuthLogin = true
+				this.setHasAuthLogin(true)
 				uni.navigateBack()
 			},
 			// #ifdef MP-WEIXIN

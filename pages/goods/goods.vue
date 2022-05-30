@@ -24,7 +24,7 @@
 		>
 			<view v-for="(item, index) in list " :key="index" v-show="item._id['opendb-mall-goods'].length > 0">
 				<text :id="'x' + item._id._value" style="font-size: 14px;">{{ item.name }}</text>
-				<template v-for="(goods, idx) in item._id['opendb-mall-goods']">
+				<template v-for="(goods, idx) in item._id['opendb-mall-goods']" :key="idx">
 					<view class="card d-flex">
 						 <view class="card_left">
 							<image
@@ -54,7 +54,8 @@
 								<!-- 按钮 plus | minus -->
 								<view class="card_right_foot_buttonBox">
 									<!-- minus 按钮 -->
-									<uni-icons v-show="goods.num" type="minus-filled" size="26" color="rgb(241, 185, 62)" @click="minus(goods)"></uni-icons>
+									<uni-icons  v-show="goods.num > 0 ? true : false" type="minus-filled" size="26" color="rgb(241, 185, 62)" @click="minus(goods)"></uni-icons>
+						
 									<!-- 数量 -->
 									<view 
 										v-show="goods.num"
@@ -68,11 +69,13 @@
 								<!--  按钮end -->
 								
 							</view>
-							
-							
+														
 						</view>
 					</view>
 				</template>
+			</view>
+			<view style="height: 600rpx; width: 10rpx;">
+				
 			</view>
 		</scroll-view>
 		<!--  右则商品区 end -->
@@ -90,7 +93,7 @@
 			<view class="cart_price_box">
 				<view>
 					¥
-					<view style="display: inline;font-size: 1.5rem;">
+					<view style="display: inline;font-size: 48rpx;">
 						{{ parseFloat(totalPrice / 100).toFixed(2) }}
 					</view>
 				</view>
@@ -188,6 +191,15 @@
 				
 			}
 		},
+		watch:{
+			'cart.length': {
+				handler(newVal, oldVal) {
+					if(newVal === 0) {
+						this.onClose()
+					}
+				}
+			} 
+		},
 		data() {
 			return {
 				list: [],
@@ -210,10 +222,9 @@
 					const { result } = await db.collection(category,'opendb-mall-goods').get()
 					
 					let { data } = result
-					
-					console.log(data, 'cate')
+
 					this.list = data
-					this.curNav = data[0]._id._value
+					this.curNav = 'x' + data[0]._id._value
 				}catch(err) {
 					console.error(err)
 					this.popup.message = '系统出现错误，请稍后再试！'
@@ -227,7 +238,10 @@
 				this.curNav = `x${id}`
 			},
 			confirm() {
-				
+				uni.setStorageSync('cart', this.cart)
+				uni.navigateTo({
+					url: '/subPages/payGoods/payGoods'
+				})
 			},
 			showPopup() {
 				if( !this.show ){
@@ -286,7 +300,6 @@
 }
 
 .nav_left {
-	border: 1px solid red;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -298,7 +311,7 @@
 	-webkit-overflow-scrolling: touch;
 }
 .last_item {
-	font-size: 0.7rem;
+	font-size: 12rpx;
 	text-align: center;
 	color: rgba(170, 170, 170, 0.925);
 	margin-bottom: 150px;
@@ -326,7 +339,6 @@
 	width: 600rpx;
 	max-width: 600rpx;
 	height: 100vh;
-	margin-bottom: 100rpx;
 	background: #fff;
 	padding: 20rpx;
 	box-sizing: border-box;
@@ -419,7 +431,7 @@
 .cart {
 	z-index: 300;
 	position: fixed;
-	bottom: 64px;
+	bottom: 30rpx;
 	left: 30rpx;
 	right: 30rpx;
 	height: 60px;
@@ -434,8 +446,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-top-left-radius: 50rem;
-	border-bottom-left-radius: 50rem;
+	border-top-left-radius: 160rpx;
+	border-bottom-left-radius: 160rpx;
 }
 .cart_price_box {
 	height: 60px;
@@ -450,8 +462,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-top-right-radius: 50rem;
-	border-bottom-right-radius: 50rem;
+	border-top-right-radius: 160rpx;
+	border-bottom-right-radius: 160rpx;
 	background: rgb(233, 86, 86);
 	color: rgb(235, 233, 233);
 }
@@ -463,8 +475,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-top-right-radius: 50rem;
-	border-bottom-right-radius: 50rem;
+	border-top-right-radius: 160rpx;
+	border-bottom-right-radius: 160rpx;
 	background: rgb(53, 51, 50);
 	color: rgb(177, 175, 174);
 }

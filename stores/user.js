@@ -24,8 +24,8 @@ export const useUserStore = defineStore('user', {
 					},
 				}
 			}).then(({result}) => {
-				console.log(result, 'logRes')
 				if(result.code === 0) {//0表示成功
+					console.log('登录成功')
 					this.userInfo = result.userInfo,
 					this.sessionKey = result.sessionKey
 					this.mobile = result.userInfo.mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
@@ -96,6 +96,10 @@ export const useUserStore = defineStore('user', {
 			let newUserInfo = Object.assign(oldUserInfo, userInfo)
 			console.log(newUserInfo, 'newUserInfo-------')
 			this.userInfo = newUserInfo
+		},
+		setHasAuthLogin(has) {
+			this.login()
+			this.hasAuthLogin = has
 		}
 	}
 });

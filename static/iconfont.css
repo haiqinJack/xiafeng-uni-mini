@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3408117 */
-  src: url('/static/iconfont.ttf') format('truetype');
+  src: url('~@/static/iconfont.ttf') format('truetype');
 }
 
 .iconfont {
@@ -11,12 +11,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.diy-plus1:before {
-  content: "\e92c";
+.diy-quan:before {
+  content: "\e6b0";
 }
 
-.diy-minus1:before {
-  content: "\e619";
+.diy-ziqu:before {
+  content: "\e6a3";
 }
 
 .diy-ontimeshipment:before {

@@ -78,6 +78,23 @@
 			"style": {
 				"navigationBarTitleText": "个人资料"
 			}
+		}, {
+			"path": "payGoods/payGoods",
+			"style": {
+				"navigationBarTitleText": "购买商品"
+			}
+
+		}, {
+			"path": "payGoods/remarks",
+			"style": {
+				"navigationBarTitleText": "备注"
+			}
+		}, {
+			"path": "order/order",
+			"style": {
+				"navigationBarTitleText": "我的订单"
+			}
+
 		}]
 	}],
 	"tabBar": {
