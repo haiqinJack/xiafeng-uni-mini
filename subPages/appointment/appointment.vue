@@ -7,7 +7,7 @@
 				<uni-icons type="right" class="cell-right-icon"></uni-icons>
 			</view>
 		</navigator>
-		<unicloud-db ref="udb" loadtime="manual" v-slot:default="{data, loading, error, options}" collection="appointment-project" :where="where">
+		<unicloud-db ref="udb" loadtime="manual" v-slot:default="{data, loading, error, options}" orderby="order desc" collection="appointment-project" :where="where">
 			<view v-if="error">{{error.message}}</view>
 			<view v-else-if="loading">加载中...</view>
 			<view v-else-if="data.length === 0" class="n">门店目前没有服务项目</view>
@@ -18,7 +18,7 @@
 							<image 
 								class="card_image"
 								mode="aspectFill"
-								src="~@/static/logo.jpeg" 
+								:src="item.bannerfile ? item.bannerfile.url : '/static/logo.jpeg'" 
 							/>
 							<view class="font-weight-bold font1">
 								{{ item.title }}

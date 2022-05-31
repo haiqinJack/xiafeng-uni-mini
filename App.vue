@@ -18,6 +18,7 @@ export default {
 		    success(res) {
 		      if (res.confirm) {
 		        // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+				uni.clearStorageSync()
 		        updateManager.applyUpdate();
 		      }
 		    }

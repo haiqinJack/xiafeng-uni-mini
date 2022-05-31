@@ -19,7 +19,8 @@
 					</view> -->
 					<view class="body">
 						<view class="d-flex" style="padding: 10rpx 10rpx;">
-							<image style="width: 160rpx;height: 160rpx;" mode="scaleToFill" :src="item.appointment_project_id[0].bannerfile.url" />
+							<image style="width: 160rpx;height: 160rpx;" mode="scaleToFill" 
+							:src="item.appointment_project_id[0].bannerfile ? item.appointment_project_id[0].bannerfile.url : '/static/logo.jpeg'" />
 							<view style="padding-left: 16rpx;">
 								<view style="line-height: 32rpx;margin-bottom: 20rpx;">{{ item.appointment_project_id[0].title }}</view>
 							   
