@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<diy-calendar :restWeek="shop.restWeek" @change="changeCalender"></diy-calendar>
+		<diy-calendar ref="calendar" :restWeek="shop.restWeek" @change="changeCalender"></diy-calendar>
 		<template v-if="hours.length > 0">
 			<view class="times">
 				<view v-for="(item, index) in hours" :key="index" class="time" :class="[hoursIndex == index ? 'timeActive' : '']" @click="chooseHours(index)">
@@ -200,12 +200,9 @@ export default {
 		},
 		setFormData() {
 			let project = uni.getStorageSync('appointment-project');
-			let now = new Date();
-			let year = now.getFullYear();
-			let month = now.getMonth();
-			let date = now.getDate();
-			
-			
+			let { curDay, days} = this.$refs.calendar
+			let { year, month, date } = days[curDay]
+						
 			this.formData.appointment_project_id = project._id;
 			this.formOptions.appointment_project_title = project.title
 			this.formOptions.project_price = project.price
