@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<unicloud-db v-slot:default="{data, loading, error, options}" 
+		<unicloud-db v-slot:default="{data, loading, error, hasMore, options}" 
 			ref="udb"
 			loadtime="manual"
 			orderby="create_time desc "
@@ -26,10 +26,11 @@
 					
 					<view class="card-footer">
 						<text style="font-size: 12px;color: #ccc;margin-right: 16rpx;">共{{ item.count }}件</text>
-						<text>￥{{ item.total_fee }}</text>
+						<text>￥{{ parseFloat(item.pay_pirce / 100).toFixed(2) }}</text>
 					</view>
 				</view>
 			</view>
+			<uni-load-more :status="loading?'loading':(hasMore ? 'more' : 'noMore')"></uni-load-more>
 		</unicloud-db>
 	</view>
 </template>
@@ -56,10 +57,10 @@
 					item.count = item.cart.reduce((total, v) => {
 						return total += v.num
 					},0)
-					
 					return item
 				})
 				this.list = data
+				return data
 			}
 		}
 	}

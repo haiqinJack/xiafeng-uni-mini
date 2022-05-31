@@ -430,8 +430,7 @@ export default {
 				this.formData.status = "预约中"
 				this.formData.pay_status = "未支付"
 				let formData = this.formData
-				uniCloud.database().collection('appointment-user').add(formData).then(({result}) => {	
-					console.log(result.code, 'add user')
+				uniCloud.database().collection('appointment-user').add(formData).then(({result}) => {
 					if(result.code){
 						uni.showToast({
 							title: '网络繁忙。',

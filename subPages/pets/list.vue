@@ -5,7 +5,6 @@
 			v-slot:default="{ data, pagination, loading, hasMore, error }"
 			loadtime="manual"
 			:collection="collectionList"
-			field="avatarUrl,nickname,pet_type{_id, title}"
 		>
 			<view v-if="error">{{ error.message }}</view>
 			<view v-else-if="data">
@@ -31,10 +30,6 @@
 <script>
 const db = uniCloud.database();
 export default {
-	onLoad() {
-		const uid = uniCloud.getCurrentUserInfo()
-		console.log(uid, 'uid')
-	},
 	onShow() {
 		if (this.$refs.udb) {
 			this.$refs.udb.refresh();
@@ -45,7 +40,8 @@ export default {
 	},
 	data() {
 		return {
-			collectionList: [db.collection('pets').getTemp(), db.collection('pet-type').getTemp()],
+			collectionList: [db.collection('pets').field('avatarUrl,nickname,pet_type').getTemp(), 
+			db.collection('pet-type').field('_id, title').getTemp()],
 			loadMore: {
 				contentdown: '',
 				contentrefresh: '',

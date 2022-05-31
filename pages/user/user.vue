@@ -9,9 +9,6 @@
 					<!-- #ifdef MP-WEIXIN -->
 					<button class="login-button" @click="to">授权登录</button>
 					<!-- #endif -->
-					<!-- #ifdef MP-ALIPAY -->
-					
-					<!-- #endif -->
 				</template>
 				<template v-else>
 					<image class="login-image" mode="scaleToFill" src="~@/static/logo.jpeg" />
@@ -53,7 +50,7 @@ import { mapState } from 'pinia'
 
 export default {
 	computed:{
-		...mapState(useUserStore, ['hasAuthLogin', 'mobile']),
+		...mapState(useUserStore, ['hasAuthLogin', 'mobile',]),
 	},
 	methods: {
 		to() {

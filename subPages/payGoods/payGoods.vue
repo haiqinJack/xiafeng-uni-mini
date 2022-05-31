@@ -139,7 +139,6 @@ export default {
 					mask: true
 				});
 				let totalFee = this.totalPrice
-				console.log(totalFee, 'fee')
 				
 				try{
 					const payment = await uniCloud.callFunction({

@@ -89,7 +89,7 @@ const validator = {
         ]
       }
     ],
-    "defaultValue": "公",
+    "defaultValue": "母",
     "label": "性别"
   },
   "pet_weight": {
@@ -111,12 +111,12 @@ const validator = {
       {
         "range": [
           {
-            "value": "是",
-            "text": "是"
-          },
-          {
             "value": "否",
             "text": "否"
+          },
+          {
+            "value": "是",
+            "text": "是"
           }
         ]
       }
@@ -140,8 +140,8 @@ const enumConverter = {
     "母": "母"
   },
   "isSterilization_valuetotext": {
-    "是": "是",
-    "否": "否"
+    "否": "否",
+    "是": "是"
   }
 }
 

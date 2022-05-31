@@ -5,7 +5,6 @@
 			field="appointment_project_id{bannerfile, title},shop_id{title, desc, latitude, longitude}, project_single_id{title},status, year,month,date,hour">
 			<view v-if="error">{{error.message}}</view>
 			<view v-else>
-				
 				<view v-for="(item, index) in data" :key="index" style="width: 680rpx;margin: 40rpx auto; padding: 10rpx 10rpx;" class="bg-white shadow">
 					<view class="header d-flex justify-content-between font-weight-normal" style="padding: 10rpx 10rpx;">
 						<view style="display: flex;">
@@ -42,7 +41,10 @@
 	export default {
 		data() {
 			return {
-				collectionList: [db.collection('appointment-user').getTemp(), db.collection('shops').getTemp(),db.collection('appointment-project').getTemp(),db.collection('appointment-project-single').getTemp()]
+				collectionList: [db.collection('appointment-user').getTemp(), 
+				db.collection('shops').getTemp(),
+				db.collection('appointment-project').getTemp(),
+				db.collection('appointment-project-single').getTemp()]
 			}
 		},
 		methods: {

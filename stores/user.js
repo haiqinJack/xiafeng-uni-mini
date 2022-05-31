@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', {
 	}),
 	actions: {
 		async login() {
+			this.logout()
 			const { code } = await this.getProviderOauth()
 			// #ifdef MP-WEIXIN
 			uniCloud.callFunction({
@@ -24,19 +25,18 @@ export const useUserStore = defineStore('user', {
 					},
 				}
 			}).then(({result}) => {
-				console.log(result, 'loginByWeixin')
 				if(result.code === 0) {//0表示成功
 					console.log('登录成功')
 					this.userInfo = result.userInfo,
 					this.sessionKey = result.sessionKey
 					if(result.userInfo.mobile) {
+						console.log("加密手机号")
 						this.mobile = result.userInfo.mobile.replace(/^(\d{3})\d+(\d{4})$/, "$1****$2")
 					}
 					uni.setStorageSync('uni_id_token', result.token)
 					uni.setStorageSync('uni_id_token_expired', result.tokenExpired)
 				}
-			}).catch(err => {
-				this.login()
+			}).catch(err => {		
 				console.error(err, 'login 失败')
 			})
 			// #endif

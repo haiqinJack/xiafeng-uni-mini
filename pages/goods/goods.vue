@@ -256,7 +256,6 @@
 			onChangePopup(e) {
 				let { show } = e
 				this.show = show
-				console.log(e, 'onChangePopup')
 			},
 			onClose() {
 				this.$refs.cartPopup.close()
@@ -274,7 +273,6 @@
 				if(goods.num == 1) {
 					this.cart.push(goods)
 				}
-				console.log(this.cart)
 			},
 			minus(goods) {
 				goods.num = goods.num > 0 ? --goods.num : 0
