@@ -52,6 +52,13 @@ import { useShopStore } from '@/stores/shop';
 import diyCard from '@/components/diy-card.vue';
 
 export default {
+	onShareAppMessage(res) {
+		return {
+			title: "夏天的风宠物生活馆",
+			path: '/pages/index',
+			imageUrl: "/static/logo.jpeg"
+		}
+	},
 	components: {
 		diyCard
 	},

@@ -97,6 +97,13 @@
 
 <script>
 	export default {
+		onShareAppMessage(res) {
+			return {
+				title: "夏天的风宠物生活馆",
+				path: '/pages/index',
+				imageUrl: "/static/logo.jpeg"
+			}
+		},
 		data() {
 			return {
 				current: 0,

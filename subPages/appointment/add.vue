@@ -18,7 +18,7 @@
 			<text style="padding-left: 20rpx;font-weight: 600 ;">选择服务宠物</text>
 			<scroll-view scroll-x enable-flex style="height:260rpx; 750rpx;display: flex;">
 				<view class="d-flex">
-					<unicloud-db v-slot:default="{ data, loading, error, options }" loadtime="manual" ref="petsdb" collection="pets" >
+					<unicloud-db v-slot:default="{ data, loading, error, options }" loadtime="manual" ref="petsdb" :where="petsWhere" collection="pets" >
 						<view v-if="error">网络连接超时</view>
 						<view v-else class="d-flex">
 							<view v-for="(item, index) in data" :key="index" @click="onChoosePet(item, index)" class="pet">
@@ -122,7 +122,7 @@ import { mapState } from 'pinia';
 import diyCalendar from '@/components/diy-calendar.vue';
 
 const db = uniCloud.database()
-
+const { uid } = uniCloud.getCurrentUserInfo()
 export default {
 	components: {
 		diyCalendar
@@ -176,6 +176,7 @@ export default {
 			hour: -1
 		}
 		return {
+			petsWhere: `user_id == '${uid}'`,
 			singleDB: [],
 			projectSingleWhere: '',
 			formData,

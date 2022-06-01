@@ -29,6 +29,7 @@
 
 <script>
 const db = uniCloud.database();
+const { uid } = uniCloud.getCurrentUserInfo()
 export default {
 	onShow() {
 		if (this.$refs.udb) {
@@ -36,11 +37,13 @@ export default {
 		}
 	},
 	onReady() {
+		
 		this.$refs.udb.loadData();
 	},
 	data() {
+		
 		return {
-			collectionList: [db.collection('pets').field('avatarUrl,nickname,pet_type').getTemp(), 
+			collectionList: [db.collection('pets').where(`user_id == '${uid}'`).field('_id, user_id ,nickname,pet_type').getTemp(), 
 			db.collection('pet-type').field('_id, title').getTemp()],
 			loadMore: {
 				contentdown: '',

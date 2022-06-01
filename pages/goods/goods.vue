@@ -176,6 +176,13 @@
 <script>
 	const db = uniCloud.database()
 	export default {
+		onShareAppMessage(res) {
+			return {
+				title: "夏天的风宠物生活馆",
+				path: '/pages/index',
+				imageUrl: "/static/logo.jpeg"
+			}
+		},
 		onLoad() {
 			this._init()
 		},

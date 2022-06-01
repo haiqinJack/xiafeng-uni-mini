@@ -5,6 +5,7 @@
 			loadtime="manual"
 			orderby="create_time desc "
 			@load="onLoadData"
+			:where="where"
 			collection="uni-id-base-order">
 			<view v-if="error">{{error.message}}</view>
 			<view v-else>
@@ -38,6 +39,7 @@
 <script>
 	import utils from '/utils/index'
 	
+	const { uid } = uniCloud.getCurrentUserInfo()
 	export default {
 		onLoad() {
 			this.$nextTick(() => {
@@ -47,7 +49,8 @@
 
 		data() {
 			return {
-				list: []
+				list: [],
+				where: `user_id == '${uid}'`
 			}
 		},
 		methods: {
