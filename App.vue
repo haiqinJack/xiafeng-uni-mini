@@ -8,6 +8,7 @@ export default {
 		
 		updateManager.onCheckForUpdate(function (res) {
 			// 请求完新版本信息的回调
+			
 			console.log('有新版本？',res.hasUpdate);
 		});
 		
@@ -29,6 +30,9 @@ export default {
 		updateManager.onUpdateFailed(function (res) {
 		  // 新的版本下载失败
 		});
+		
+		this.login()
+		
 	},
 	onShow() {
 		// #ifdef MP-WEIXIN

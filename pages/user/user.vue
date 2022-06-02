@@ -46,13 +46,19 @@
 </template>
 <script>
 import { useUserStore } from '@/stores/user';
-import { mapState } from 'pinia'
-
+import { mapState, mapActions } from 'pinia'
 export default {
+	onReady() {
+		const { uid } = uniCloud.getCurrentUserInfo()
+		if(!uid) {
+			this.login()
+		}
+	},
 	computed:{
 		...mapState(useUserStore, ['hasAuthLogin', 'mobile',]),
 	},
 	methods: {
+		...mapActions(useUserStore, ['login']),
 		to() {
 			uni.navigateTo({
 				url: '/subPages/login/login'

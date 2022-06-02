@@ -96,7 +96,15 @@
 </template>
 
 <script>
+	import { useUserStore } from '@/stores/user';
+	import { mapState, mapActions } from 'pinia'
 	export default {
+		onReady() {
+			const { uid } = uniCloud.getCurrentUserInfo()
+			if(!uid) {
+				this.login()
+			}
+		},
 		onShareAppMessage(res) {
 			return {
 				title: "夏天的风宠物生活馆",
@@ -111,6 +119,7 @@
 			}
 		},
 		methods: {
+			...mapActions(useUserStore, ['login']),
 			to(url){
 				uni.switchTab({
 					url

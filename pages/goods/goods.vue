@@ -174,6 +174,8 @@
 </template>
 
 <script>
+	import { useUserStore } from '@/stores/user';
+	import { mapActions } from 'pinia'
 	const db = uniCloud.database()
 	export default {
 		onShareAppMessage(res) {
@@ -184,7 +186,14 @@
 			}
 		},
 		onLoad() {
+			
 			this._init()
+		},
+		onReady() {
+			const { uid } = uniCloud.getCurrentUserInfo()
+			if(!uid) {
+				this.login()
+			}
 		},
 		computed: {
 			totalPrice() {
@@ -221,6 +230,7 @@
 			}
 		},
 		methods: {
+			...mapActions(useUserStore, ['login']),
 			_init(){
 				this.apiGetCategories()
 			},

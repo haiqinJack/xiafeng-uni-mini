@@ -49,9 +49,16 @@
 <script>
 import { mapActions } from 'pinia';
 import { useShopStore } from '@/stores/shop';
+import { useUserStore } from '@/stores/user';
 import diyCard from '@/components/diy-card.vue';
 
 export default {
+	onReady() {
+		const { uid } = uniCloud.getCurrentUserInfo()
+		if(!uid) {
+			this.login()
+		}
+	},
 	onShareAppMessage(res) {
 		return {
 			title: "夏天的风宠物生活馆",
@@ -75,6 +82,7 @@ export default {
 		};
 	},
 	methods: {
+		...mapActions(useUserStore, ['login']),
 		...mapActions(useShopStore, ['setShop']),
 		hasAuthLocation() {
 			// #ifdef MP
