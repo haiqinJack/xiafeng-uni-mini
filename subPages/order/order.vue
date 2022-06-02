@@ -38,7 +38,6 @@
 
 <script>
 	import utils from '/utils/index'
-	
 	const { uid } = uniCloud.getCurrentUserInfo()
 	export default {
 		onLoad() {

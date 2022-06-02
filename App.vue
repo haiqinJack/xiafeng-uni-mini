@@ -29,7 +29,15 @@ export default {
 		updateManager.onUpdateFailed(function (res) {
 		  // 新的版本下载失败
 		});
-		this.login()
+	},
+	onShow() {
+		// #ifdef MP-WEIXIN
+		uni.checkSession({
+			fail: (e) => {
+				this.login()
+			}
+		})
+		// #endif
 	},
 	setup() {
 		const userStroe = useUserStore()

@@ -39,10 +39,11 @@
 
 <script>
 	const db = uniCloud.database()
+	const { uid } = uniCloud.getCurrentUserInfo()
 	export default {
 		data() {
 			return {
-				collectionList: [db.collection('appointment-user').getTemp(), 
+				collectionList: [db.collection('appointment-user').where(`user_id == '${uid}'`).getTemp(), 
 				db.collection('shops').getTemp(),
 				db.collection('appointment-project').getTemp(),
 				db.collection('appointment-project-single').getTemp()]
@@ -62,7 +63,7 @@
 						})
 					},
 				})
-			}
+			},
 		}
 	}
 </script>
